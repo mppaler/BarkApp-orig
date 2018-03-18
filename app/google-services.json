@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "875761218969",
+    "firebase_url": "https://barkapp-cc121.firebaseio.com",
+    "project_id": "barkapp-cc121",
+    "storage_bucket": "barkapp-cc121.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:875761218969:android:2312fbd1c0d36db5",
+        "android_client_info": {
+          "package_name": "com.codeworm.barkapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "875761218969-db37c6j1f8cbvolv2e9e5qjb2iabuqjc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codeworm.barkapp",
+            "certificate_hash": "44cbc961cc9559710b106a25f460e5817ce35583"
+          }
+        },
+        {
+          "client_id": "875761218969-sf9g67utlfa28lll3bh3jmbetqh5fj34.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6TSdUdVYKXonObZKOuR9QcqUypRoeERQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "875761218969-sf9g67utlfa28lll3bh3jmbetqh5fj34.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

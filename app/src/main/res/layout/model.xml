@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp"
+    card_view:cardCornerRadius="5dp"
+    card_view:cardElevation="5dp"
+    android:layout_height="100dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/nameTxt"
+            android:layout_width="210dp"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="4dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+        <TextView
+            android:id="@+id/desctxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:padding="10dp"
+            android:text="/"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/totalTxt"
+            android:layout_toStartOf="@+id/totalTxt" />
+
+        <TextView
+            android:id="@+id/ratioTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="293dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:layout_alignBaseline="@+id/desctxt"
+            android:layout_alignBottom="@+id/desctxt"
+            android:layout_toStartOf="@+id/desctxt" />
+
+        <TextView
+            android:id="@+id/totalTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="233dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:layout_alignBaseline="@+id/ratioTxt"
+            android:layout_alignBottom="@+id/ratioTxt"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="13dp"
+            android:layout_marginEnd="13dp" />
+
+        <TextView
+            android:id="@+id/fullTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="16dp"
+
+            android:textColor="#ff0000"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="233dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/totalTxt"
+            android:layout_alignEnd="@+id/totalTxt"
+            android:layout_marginBottom="10dp" />
+
+        <TextView
+            android:id="@+id/availTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="16dp"
+
+            android:textColor="#008000"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="233dp"
+            tools:layout_editor_absoluteY="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/totalTxt"
+            android:layout_alignEnd="@+id/totalTxt"
+            android:layout_marginBottom="10dp" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

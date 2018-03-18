@@ -1,0 +1,72 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codeworm.barkapp.RegisteredUserActivity"
+    android:orientation="vertical"
+    android:background="@drawable/home_bg">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="30"
+        android:background="?android:attr/colorBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:text="Welcome, "
+                android:textColor="@android:color/black"
+                android:textSize="36sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="0dp"
+        android:layout_weight="70"
+        android:background="?android:attr/colorBackground"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/details_btn"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="50"
+            android:background="@drawable/qr_button_bg"
+            android:drawablePadding="-30dp"
+            android:drawableTop="@drawable/icon_qr"
+            android:paddingTop="20dp"
+            android:text="Parking Details"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:layout_weight="50"
+            android:background="@drawable/location_button_bg"
+            android:drawablePadding="-30dp"
+            android:drawableTop="@drawable/icon_location"
+            android:paddingTop="20dp"
+            android:text="FIND A RACK"
+            android:textColor="@android:color/background_light"
+            android:textSize="20sp" />
+    </LinearLayout>
+</LinearLayout>
