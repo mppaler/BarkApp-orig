@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
 
+        //SO AYUN PO ANO
     }
 
 }
