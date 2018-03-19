@@ -22,6 +22,7 @@ public class Constants {
     public static final String URL_CHECK_FORGOT_PASSWORD = ROOT_URL+"checkPreReqForgotPassword.php";
     public static final String URL_CHANGE_PASSWORD = ROOT_URL+"changePassword.php";
     public static final String URL_CHANGE_USERNAME = ROOT_URL+"changeUsername.php";
+    public static final String URL_CHANGE_MOBILE_NUMBER = ROOT_URL+"changeMobileNumber.php";
 
 
     public static final String UPDATE_GENERAL_LOG_UPDATE = "update";

@@ -3,10 +3,7 @@ package com.codeworm.barkapp;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.DialogPreference;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -20,8 +17,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,7 +26,7 @@ public class AccountFragment extends Fragment {
     TextView txtFullname, txtUsername, txtMobilenum;
     Button btnChangeUsername, btnChangePassword, btnChangeMobilenum, btnLogout;
     ListView listView;
-
+    String details[] = {};
     public AccountFragment() {
         // Required empty public constructor
     }
@@ -39,6 +34,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -65,16 +61,14 @@ public class AccountFragment extends Fragment {
         txtUsername.setText(SharedPreferencesManager.getInstance(getActivity()).getUsername());
         txtMobilenum.setText(SharedPreferencesManager.getInstance(getActivity()).getMobilenum());
 
-
-        final String details[] = {
+        details = new String[]{
                 "FULLNAME : " + SharedPreferencesManager.getInstance(getActivity()).getFullname(),
                 "USERNAME : " + SharedPreferencesManager.getInstance(getActivity()).getUsername(),
-                "PASSWORD : N/A",
+                "PASSWORD : " + hidePassword(SharedPreferencesManager.getInstance(getActivity()).getPassword()),
                 "MOBILE NUMBER : " + SharedPreferencesManager.getInstance(getActivity()).getMobilenum()
         };
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, details);
-        listView.setAdapter(adapter);
+        updateAdapter();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,8 +78,8 @@ public class AccountFragment extends Fragment {
                 switch (position){
                     case 0: Toast.makeText(getActivity(), "Fullname cannot be changed.", Toast.LENGTH_SHORT).show(); break;
                     case 1: startActivity(new Intent(getActivity().getApplicationContext(), ChangeUsernameActivity.class)); break;
-                    case 2: Toast.makeText(getActivity(), "You clicked password", Toast.LENGTH_SHORT).show(); break;
-                    case 3: Toast.makeText(getActivity(), "You clicked mobile number", Toast.LENGTH_SHORT).show(); break;
+                    case 2: startActivity(new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class)); break;
+                    case 3: startActivity(new Intent(getActivity().getApplicationContext(), ChangeMobileNumberActivity.class)); break;
 
                 }
             }
@@ -100,6 +94,20 @@ public class AccountFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        details[1] = "USERNAME : " + SharedPreferencesManager.getInstance(getActivity()).getUsername();
+        details[2] = "PASSWORD : " + hidePassword(SharedPreferencesManager.getInstance(getActivity()).getPassword());
+        details[3] = "MOBILE NUMBER : " + SharedPreferencesManager.getInstance(getActivity()).getMobilenum();
+        updateAdapter();
+    }
+
+    public void updateAdapter(){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, details);
+        listView.setAdapter(adapter);
     }
 
     public void createConfirmation(){
@@ -124,5 +132,16 @@ public class AccountFragment extends Fragment {
 
         alertDialog.create().show();
     }
+
+    public String hidePassword(String password){
+        String holder = "";
+
+        for(int ctr=0; ctr<password.length(); ctr++){
+            holder += "*";
+        }
+
+        return holder;
+    }
+
 
 }

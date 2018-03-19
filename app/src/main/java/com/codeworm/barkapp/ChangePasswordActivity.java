@@ -24,8 +24,8 @@ import java.util.Map;
 
 public class ChangePasswordActivity extends AppCompatActivity {
     Button btnSubmit, btnCancel;
-    EditText editNewPassword, editConfirmNewPassword;
-    String sNewPassword, sConfirmNewPassword, sUsername, sMobileNum;
+    EditText editCurrentPassword, editNewPassword, editConfirmNewPassword;
+    String sCurrentPassword, sNewPassword, sConfirmNewPassword, sUsername, sMobileNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,16 +34,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnCancel = (Button) findViewById(R.id.btnCancel);
+        editCurrentPassword = (EditText) findViewById(R.id.editCurrentPassword);
         editNewPassword = (EditText) findViewById(R.id.editNewPassword);
         editConfirmNewPassword = (EditText) findViewById(R.id.editConfirmNewPassword);
 
-        sUsername = getIntent().getStringExtra("sUsername");
-        sMobileNum = getIntent().getStringExtra("sMobileNum");
+        sUsername = SharedPreferencesManager.getInstance(this).getUsername();
+        sMobileNum = SharedPreferencesManager.getInstance(this).getMobilenum();
 
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sCurrentPassword = editCurrentPassword.getText().toString();
                 sNewPassword = editNewPassword.getText().toString();
                 sConfirmNewPassword = editConfirmNewPassword.getText().toString();
 
@@ -52,10 +54,26 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 }
             }
         });
+
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     public boolean validate(){
         boolean valid = true;
+
+        if(!sCurrentPassword.equals(SharedPreferencesManager.getInstance(this).getPassword()) || sCurrentPassword.isEmpty()){
+            if(sCurrentPassword.isEmpty()){
+                editCurrentPassword.setError("Please enter your current password");
+            }else{
+                editCurrentPassword.setError("Entered value does not match with your current password");
+            }
+            valid = false;
+        }
 
         if(!sNewPassword.equals(sConfirmNewPassword) || sNewPassword.isEmpty()){
             if(sNewPassword.isEmpty()){
@@ -94,8 +112,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
                             if(jsonObject.getString("error").equals("false")){
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                 loadingDialog.dismiss();
-                                Intent intent = new Intent(ChangePasswordActivity.this, LoginActivity.class);
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setPassword(sNewPassword);
+                                finish();
+                                Intent intent = new Intent(ChangePasswordActivity.this, MainActivity.class);
                                 startActivity(intent);
+
                             }else{
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
                                 loadingDialog.dismiss();

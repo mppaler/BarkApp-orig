@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     AccountFragment accountFragment = new AccountFragment();
     ParkingLogFragment parkingLogFragment = new ParkingLogFragment();
     ParkingLog parkingLog;
+    TextView tvFullname, tvUsername;
     public ProgressBar progressBar;
     private ArrayList<ParkingLog> mParkingLog = new ArrayList<ParkingLog>();
 
@@ -57,7 +58,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, homeFragment.getTag()).commit();
@@ -84,14 +84,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView tvFullname = (TextView) headerView.findViewById(R.id.nav_fullname);
-        TextView tvUsername = (TextView) headerView.findViewById(R.id.nav_username);
+        tvFullname = (TextView) headerView.findViewById(R.id.nav_fullname);
+        tvUsername = (TextView) headerView.findViewById(R.id.nav_username);
         tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
         tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
 
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
+        tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
     }
 
     @Override
@@ -134,10 +138,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, homeFragment.getTag()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, "homefragment").commit();
         } else if (id == R.id.nav_account) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment, accountFragment.getTag()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment, "accountfragment").commit();
         } else if (id == R.id.nav_parking_logs) {
             ParkingLogAsyncTask parkingLogAsyncTask = new ParkingLogAsyncTask();
             parkingLogAsyncTask.execute(SharedPreferencesManager.getInstance(this).getUsername());

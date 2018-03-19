@@ -140,11 +140,10 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
-
                             //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
                             System.out.println("Getting there...");
                             if(!jsonObject.getBoolean("error")){
-                                SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
+                                SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("password").trim(), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                                 loadingDialog.dismiss();
                                 finish();
@@ -155,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             }
                         } catch (JSONException e) {
+                            loadingDialog.dismiss();
                             e.printStackTrace();
                         }
 
@@ -195,7 +195,6 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
 
-        //SO AYUN PO ANO
     }
 
 }

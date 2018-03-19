@@ -2,6 +2,7 @@ package com.codeworm.barkapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -36,16 +37,15 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PhoneNumberVerificationActivity extends AppCompatActivity {
+public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
     Button btnCancel, btnSubmit, btnResend;
-    String sFirstDigit, sSecondDigit, sThirdDigit, sFourthDigit, sFullname, sUsername, sPassword, sMobileNum;
+    String sFirstDigit, sSecondDigit, sThirdDigit, sFourthDigit, sUsername, sMobileNum;
     EditText etFirstDigit, etSecondDigit, etThirdDigit, etFouthDigit;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_phone_number_verification);
+        setContentView(R.layout.activity_change_mobile_number_verification);
 
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
@@ -55,23 +55,8 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
         etThirdDigit = (EditText) findViewById(R.id.tvThirdDigit);
         etFouthDigit = (EditText) findViewById(R.id.tvFourthDigit);
 
-        if(getIntent().getStringExtra("type").equals("signup")){
-            sFullname = getIntent().getStringExtra("sFullname");
-            sUsername = getIntent().getStringExtra("sUsername");
-            sPassword = getIntent().getStringExtra("sPassword");
-            sMobileNum = getIntent().getStringExtra("sMobileNum");
-        }else{
-            sUsername = getIntent().getStringExtra("sUsername");
-            sMobileNum = getIntent().getStringExtra("sMobileNum");
-        }
-
-
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        sMobileNum = getIntent().getStringExtra("newnumber");
+        sUsername = SharedPreferencesManager.getInstance(this).getUsername();
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,12 +67,15 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                 sFourthDigit = etFouthDigit.getText().toString();
 
                 String sCode = sFirstDigit + sSecondDigit + sThirdDigit + sFourthDigit;
-                System.out.println("Value of sMobileNum is -> " + sMobileNum);
-                System.out.println("Value of sCode is -> " + sCode);
-                System.out.println("Entering CheckCodeAsyncTask...");
                 CheckCodeAsyncTask checkCodeAsyncTask = new CheckCodeAsyncTask();
                 checkCodeAsyncTask.execute(sMobileNum, sCode);
+            }
+        });
 
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
             }
         });
 
@@ -98,18 +86,12 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                 sendCode();
             }
         });
-
     }
 
     public class CheckCodeAsyncTask extends AsyncTask<String,Void,Void> {
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.pbCodeVerification);
         String checkCodeResponse;
-        private Context mContext;
-        final LoadingDialog loadingDialog = new LoadingDialog(PhoneNumberVerificationActivity.this);
 
-//        public CheckCodeAsyncTask(Context context){
-//            this.mContext = context;
-//        }
+        final LoadingDialog loadingDialog = new LoadingDialog(ChangeMobileNumberVerificationActivity.this);
 
         @Override
         protected void onPreExecute() {
@@ -129,20 +111,14 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressBar.setVisibility(View.INVISIBLE);
+
             System.out.println("Value of checkCodeResponse -> " + checkCodeResponse);
             System.out.println("Entered onPostExecute..");
             if(checkCodeResponse.equals("true")){
                 System.out.println("Entered in checkCodeResponse condition");
                 Toast.makeText(getApplicationContext(), "Code matched.", Toast.LENGTH_SHORT).show();
-                if(getIntent().getStringExtra("type").equals("signup")){
-                    registerUser();
-                    loadingDialog.dismiss();
-
-                }else{
-                    proceedToChangePassword();
-                    loadingDialog.dismiss();
-                }
+                changeMobileNumber();
+                loadingDialog.dismiss();
 
             }else{
                 loadingDialog.dismiss();
@@ -206,60 +182,52 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
             return baos.toString();
         }
 
-        public void registerUser(){
-            System.out.println("Entered registerUser method...");
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_REGISTER,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            //progressDialog.dismiss();
-                            try {
-                                System.out.println("Entered onResponse method...");
-                                System.out.println(response);
-                                JSONObject jsonObject = new JSONObject(response);
-                                Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
-                                //sUsername = sUsername + "@barkapp.com";
-                                System.out.println("Value of sUsername in signUp is --->" + sUsername);
-                                System.out.println("Value of sPassword in signUp is --->" + sPassword);
+    }
 
-                                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+    public void changeMobileNumber(){
+        System.out.println("Entered registerUser method...");
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CHANGE_MOBILE_NUMBER,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            System.out.println("Entered onResponse method...");
+                            System.out.println(response);
+                            JSONObject jsonObject = new JSONObject(response);
+
+                            if(jsonObject.getString("error").equals("false")){
+                                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setMobilenum(sMobileNum);
+                                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 startActivity(intent);
+                            }else{
 
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
                             }
 
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            //progressDialog.hide();
-                            Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String,String> params = new HashMap<>();
-                    params.put("fullname", sFullname);
-                    params.put("username", sUsername);
-                    params.put("password", sPassword);
-                    params.put("mobilenum", sMobileNum);
-                    return params;
-                }
-            };
 
-            RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
-        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //progressDialog.hide();
+                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("username", sUsername);
+                params.put("mobilenum", sMobileNum);
+                return params;
+            }
+        };
 
-        public void proceedToChangePassword(){
-            Intent intent = new Intent(getApplicationContext(), ForgotPasswordPageThreeActivity.class);
-            intent.putExtra("sUsername", sUsername);
-            intent.putExtra("sMobileNum", sMobileNum);
-            startActivity(intent);
-
-        }
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
     public void sendCode(){
