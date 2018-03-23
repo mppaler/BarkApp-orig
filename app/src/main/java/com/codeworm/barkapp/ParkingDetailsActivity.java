@@ -3,6 +3,8 @@ package com.codeworm.barkapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -95,6 +97,11 @@ public class ParkingDetailsActivity extends AppCompatActivity {
 
 
     private void updateGeneralLog(final String slot_id, final String username, final String status) {
+        final LoadingDialog loadingDialog = new LoadingDialog(ParkingDetailsActivity.this);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
+
         System.out.println("Inside setParkingStatus" );
         System.out.println("Value of param:slot_id --> " + slot_id);
         System.out.println("Value of param:username --> " + username);
@@ -113,6 +120,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
                                 SharedPreferencesManager.getInstance(getApplicationContext()).removeParkingDetails();
                                 unregisterUser(slot_id, username,status);
+                                loadingDialog.dismiss();
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             }else{
                                 System.out.println("Napunta sa else");

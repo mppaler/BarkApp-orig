@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     String sUsername, sPassword;
     ValidationFlag validationFlag = new ValidationFlag();
     private static final String TAG = "MyActivity";
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
         boolean decision = false;
 
         //SHOW LOADING DIALOG
-        final LoadingDialog loadingDialog = new LoadingDialog(LoginActivity.this);
+        loadingDialog = new LoadingDialog(LoginActivity.this);
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         loadingDialog.setCancelable(false);
         loadingDialog.show();
@@ -144,9 +145,9 @@ public class LoginActivity extends AppCompatActivity {
                             System.out.println("Getting there...");
                             if(!jsonObject.getBoolean("error")){
                                 SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("password").trim(), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                loadingDialog.dismiss();
-                                finish();
+
+                                //CHECK DATABASE IF USER HAS ALREADY SCANNED DATA
+                                checkUserStatus();
 
                             }else{
                                 loadingDialog.dismiss();
@@ -195,6 +196,110 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
 
+    }
+
+    public void checkUserStatus(){
+//        loadingDialog = new LoadingDialog(LoginActivity.this);
+//        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        loadingDialog.setCancelable(false);
+//        loadingDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CHECK_USER_STATUS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            System.out.println(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
+
+                            if(jsonObject.getString("message").equals("Success")){  //User was found to be registered in a rack
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setCode(jsonObject.getString("qr_data"));
+                                setParkingDetails(jsonObject.getString("qr_data"));
+
+                            }else{
+                                loginSuccess(); // User has not yet registed in a rack
+                                // Toast.makeText(getActivity().getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+//                                loadingDialog.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //progressDialog.hide();
+                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("username", SharedPreferencesManager.getInstance(getApplicationContext()).getUsername());
+                return params;
+            }
+        };
+
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+    private void setParkingDetails(final String qr_data) {
+        System.out.println("Inside setParkingDetails");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_PARKING_DETAILS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            System.out.println(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
+                            System.out.println("Getting there...");
+                            if(!jsonObject.getBoolean("error")){
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setParkingDetails(jsonObject.getString("slot_id"), jsonObject.getString("rack_location"), jsonObject.getString("address"));
+                                System.out.println("Value of slot ID that will be transfered in shared preference: " + jsonObject.getString("slot_id"));
+//                                loadingDialog.dismiss();
+                                loginSuccess();
+
+                            }else{
+                                System.out.println("Napunta sa else");
+                                Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
+//                                loadingDialog.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //progressDialog.hide();
+                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("code", qr_data);
+                return params;
+            }
+        };
+        System.out.println("The decision of momshie");
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
+    }
+
+    public void loginSuccess(){
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        loadingDialog.dismiss();
+        finish();
     }
 
 }

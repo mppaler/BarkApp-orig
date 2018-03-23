@@ -1,27 +1,42 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.codeworm.barkapp.HomeFragment"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <include
-        layout="@layout/floating_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="30"
-        android:background="@android:color/transparent">
+        android:layout_weight="20"
+        android:background="@color/background_light">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView10"
+                android:layout_width="196dp"
+                android:layout_height="189dp"
+                android:layout_gravity="center_horizontal"
+                app:srcCompat="@drawable/final_logo" />
+
+            <TextView
+                android:id="@+id/textView37"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_blue_bright"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="PARK YOUR BICYCLE"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
             <TextView
                 android:id="@+id/textView9"
@@ -54,78 +69,208 @@
                 android:textColor="@android:color/black"
                 android:textSize="40sp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:orientation="horizontal">
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/textView40"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/holo_green_light"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="ECO-FRIENDLY!"
+                    android:textAlignment="center"
+                    android:textColor="@color/background_light"
+                    android:textSize="24sp" />
+
+                <TextView
+                    android:id="@+id/textView39"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="#7fa87f"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="CONVENIENT!"
+                    android:textAlignment="center"
+                    android:textColor="@color/background_light"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="0dp"
+                android:fontFamily="sans-serif"
+                android:text="FIND "
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/textView9"
+                android:fontFamily="sans-serif"
+                android:text="RACK"
+                android:textColor="@android:color/black"
+                android:textSize="50sp" />
+
+            <TextView
+                android:id="@+id/textView43"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView10"
+                android:fontFamily="sans-serif"
+                android:text="EASILY"
+                android:textColor="@android:color/black"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/textView38"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?android:attr/statusBarColor"
+                android:paddingBottom="10dp"
+                android:paddingTop="10dp"
+                android:text="THE DEVELOPERS"
+                android:textAlignment="center"
+                android:textColor="@color/background_light"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal|center"
+                android:gravity="center_horizontal|center"
+                android:orientation="horizontal"
+                android:textAlignment="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal|center"
+                    android:layout_weight="50"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical"
+                    android:textAlignment="center">
+
+                    <TextView
+                        android:id="@+id/textView44"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView10"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/next_button_bg"
+                        android:fontFamily="sans-serif"
+                        android:padding="30dp"
+                        android:text="H"
+                        android:textColor="@android:color/black"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/textView45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView10"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/login_button_bg"
+                        android:fontFamily="sans-serif"
+                        android:padding="30dp"
+                        android:text="R"
+                        android:textColor="@android:color/black"
+                        android:textSize="40sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="50"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textView44"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView10"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/login_button_bg"
+                        android:fontFamily="sans-serif"
+                        android:padding="30dp"
+                        android:text="M"
+                        android:textColor="@android:color/black"
+                        android:textSize="40sp" />
+
+                    <TextView
+                        android:id="@+id/textView45"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView10"
+                        android:layout_weight="1"
+                        android:background="@drawable/next_button_bg"
+                        android:fontFamily="sans-serif"
+                        android:padding="30dp"
+                        android:text="K"
+                        android:textColor="@android:color/black"
+                        android:textSize="40sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
     </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="0dp"
-        android:background="@android:color/transparent"
-        android:orientation="vertical">
+        android:layout_gravity="bottom"
+        android:layout_weight="80"
+        android:background="@drawable/background_with_shadow"
+        android:elevation="24dp"
+        android:orientation="horizontal">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation_parking_details"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="30"
-            android:orientation="vertical">
+            android:layout_weight="50"
+            android:background="@color/zxing_possible_result_points"
+            android:visibility="gone"
+            app:menu="@menu/navigation_parking_details" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation_scan"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="70"
-            android:orientation="horizontal">
+            android:layout_weight="50"
+            android:background="@android:color/holo_red_light"
+            app:menu="@menu/navigation_scan" />
 
-            <Button
-                android:id="@+id/parking_details_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="50"
-                android:background="@drawable/parking_details_button_bg"
-                android:drawablePadding="-30dp"
-                android:drawableTop="@drawable/icon_parking_details"
-                android:paddingTop="20dp"
-                android:text="PARKING DETAILS"
-                android:textColor="@android:color/background_light"
-                android:textSize="20sp"
-                android:visibility="gone" />
-
-            <Button
-                android:id="@+id/scan_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="50"
-                android:background="@drawable/qr_button_bg"
-                android:drawablePadding="-30dp"
-                android:drawableTop="@drawable/icon_qr"
-                android:paddingTop="20dp"
-                android:text="QR SCAN"
-                android:textColor="@android:color/background_light"
-                android:textSize="20sp" />
-
-            <Button
-                android:id="@+id/location_btn"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="50"
-                android:background="@drawable/location_button_bg"
-                android:drawablePadding="-30dp"
-                android:drawableTop="@drawable/icon_location"
-                android:paddingTop="20dp"
-                android:text="FIND A RACK"
-                android:textColor="@android:color/background_light"
-                android:textSize="20sp" />
-        </LinearLayout>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation_location"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:background="@android:color/holo_blue_light"
+            app:menu="@menu/navigation_location" />
 
     </LinearLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+
+
+</LinearLayout>
