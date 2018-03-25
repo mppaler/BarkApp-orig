@@ -18,60 +18,144 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="1">
 
-            <ImageView
-                android:id="@+id/imageView10"
-                android:layout_width="196dp"
-                android:layout_height="189dp"
-                android:layout_gravity="center_horizontal"
-                app:srcCompat="@drawable/final_logo" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/wallet_bright_foreground_holo_dark"
+                android:elevation="5dp">
+
+                <ImageView
+                    android:id="@+id/imageView10"
+                    android:layout_width="150dp"
+                    android:layout_height="133dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    app:srcCompat="@drawable/final_logo" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/textView37"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/holo_blue_bright"
+                android:background="@color/wallet_highlighted_text_holo_light"
+                android:elevation="0dp"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:text="PARK YOUR BICYCLE"
                 android:textAlignment="center"
+                android:textColor="@android:color/black"
                 android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:fontFamily="sans-serif"
-                android:text="FIND "
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/black"
-                android:textSize="50sp" />
-
-            <TextView
-                android:id="@+id/textView10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView9"
-                android:fontFamily="sans-serif"
-                android:text="RACK"
-                android:textColor="@android:color/black"
-                android:textSize="50sp" />
-
-            <TextView
-                android:id="@+id/textView11"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView10"
-                android:fontFamily="sans-serif"
-                android:text="EASILY"
-                android:textColor="@android:color/black"
-                android:textSize="40sp" />
+                android:layout_height="match_parent"
+                android:background="@color/wallet_highlighted_text_holo_light"
+                android:orientation="horizontal"
+                android:paddingBottom="30dp"
+                android:paddingTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33.3"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/homepage_element1"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        app:srcCompat="@mipmap/homepage_element2" />
+
+                    <TextView
+                        android:id="@+id/homepage_element_title1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="FIND A RACK"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33.3"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/homepage_element2"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        app:srcCompat="@mipmap/homepage_element1" />
+
+                    <TextView
+                        android:id="@+id/homepage_element_title2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="PARK YOUR\n BICYCLE"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="33.3"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/homepage_element3"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        app:srcCompat="@mipmap/homepage_element3" />
+
+                    <TextView
+                        android:id="@+id/homepage_element_title3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="SCAN QR"
+                        android:textColor="@android:color/black"
+                        android:textSize="18sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView43"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView10"
+                    android:layout_gravity="center"
+                    android:layout_weight="50"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="No bicycle parking? Use this app to park conveniently on your nearby destination!"
+                    android:textAlignment="center"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/imageView13"
+                    android:layout_width="match_parent"
+                    android:layout_height="182dp"
+                    android:layout_weight="50"
+                    app:srcCompat="@mipmap/homepage_biker" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:elevation="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -79,13 +163,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@android:color/holo_green_light"
+                    android:background="@color/zxing_custom_possible_result_points"
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:text="ECO-FRIENDLY!"
                     android:textAlignment="center"
-                    android:textColor="@color/background_light"
+                    android:textColor="@android:color/background_light"
                     android:textSize="24sp" />
 
                 <TextView
@@ -93,46 +177,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="#7fa87f"
+                    android:background="@color/zxing_custom_viewfinder_laser"
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:text="CONVENIENT!"
                     android:textAlignment="center"
-                    android:textColor="@color/background_light"
+                    android:textColor="@android:color/background_light"
                     android:textSize="24sp" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/textView41"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:elevation="0dp"
-                android:fontFamily="sans-serif"
-                android:text="FIND "
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textColor="@android:color/black"
-                android:textSize="50sp" />
-
-            <TextView
-                android:id="@+id/textView42"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/textView9"
-                android:fontFamily="sans-serif"
-                android:text="RACK"
-                android:textColor="@android:color/black"
-                android:textSize="50sp" />
-
-            <TextView
-                android:id="@+id/textView43"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textView10"
-                android:fontFamily="sans-serif"
-                android:text="EASILY"
-                android:textColor="@android:color/black"
-                android:textSize="40sp" />
 
             <TextView
                 android:id="@+id/textView38"
@@ -141,95 +194,18 @@
                 android:background="?android:attr/statusBarColor"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
-                android:text="THE DEVELOPERS"
+                android:text="THE TEAM"
                 android:textAlignment="center"
                 android:textColor="@color/background_light"
                 android:textSize="24sp" />
 
-            <LinearLayout
+            <ImageView
+                android:id="@+id/imageView14"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal|center"
-                android:gravity="center_horizontal|center"
-                android:orientation="horizontal"
-                android:textAlignment="center">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal|center"
-                    android:layout_weight="50"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical"
-                    android:textAlignment="center">
-
-                    <TextView
-                        android:id="@+id/textView44"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView10"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/next_button_bg"
-                        android:fontFamily="sans-serif"
-                        android:padding="30dp"
-                        android:text="H"
-                        android:textColor="@android:color/black"
-                        android:textSize="40sp" />
-
-                    <TextView
-                        android:id="@+id/textView45"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView10"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/login_button_bg"
-                        android:fontFamily="sans-serif"
-                        android:padding="30dp"
-                        android:text="R"
-                        android:textColor="@android:color/black"
-                        android:textSize="40sp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="50"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/textView44"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView10"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="1"
-                        android:background="@drawable/login_button_bg"
-                        android:fontFamily="sans-serif"
-                        android:padding="30dp"
-                        android:text="M"
-                        android:textColor="@android:color/black"
-                        android:textSize="40sp" />
-
-                    <TextView
-                        android:id="@+id/textView45"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView10"
-                        android:layout_weight="1"
-                        android:background="@drawable/next_button_bg"
-                        android:fontFamily="sans-serif"
-                        android:padding="30dp"
-                        android:text="K"
-                        android:textColor="@android:color/black"
-                        android:textSize="40sp" />
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="260dp"
+                android:layout_weight="0.59"
+                android:padding="10dp"
+                app:srcCompat="@drawable/the_team" />
 
 
         </LinearLayout>
@@ -240,9 +216,10 @@
         android:layout_height="match_parent"
         android:layout_gravity="bottom"
         android:layout_weight="80"
-        android:background="@drawable/background_with_shadow"
-        android:elevation="24dp"
-        android:orientation="horizontal">
+        android:background="@drawable/shadow"
+        android:elevation="12dp"
+        android:orientation="horizontal"
+        tools:elevation="2dp">
 
         <android.support.design.widget.BottomNavigationView
             android:id="@+id/navigation_parking_details"
