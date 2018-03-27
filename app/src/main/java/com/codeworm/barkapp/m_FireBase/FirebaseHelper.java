@@ -38,6 +38,7 @@ public class FirebaseHelper {
     //IMPLEMENT FETCH DATA AND FILL ARRAYLIST
     private void fetchData(DataSnapshot dataSnapshot) {
 
+
             LocationModel locationModel = dataSnapshot.getValue(LocationModel.class);
 
             System.out.println("POPO"+locationModel);
@@ -56,6 +57,7 @@ public class FirebaseHelper {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 LocationModel locationModel = dataSnapshot.getValue(LocationModel.class);
                 fetchData(dataSnapshot);
+
                 locationModels.add(locationModel);
             }
 
@@ -66,6 +68,8 @@ public class FirebaseHelper {
                 String key = dataSnapshot.getKey();
                 int index=mKeys.indexOf(key);
                 locationModels.set(index, locationModel);
+                System.out.println("GAYAHIN NLNG KITA PRE "+ key + index + locationModel.toString());
+
 //
 //                LocationModel locationModel = dataSnapshot.getValue(LocationModel.class);
 //                locationModel.setKey(dataSnapshot.getKey());
@@ -99,8 +103,6 @@ public class FirebaseHelper {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-
                 String key = dataSnapshot.getKey();
                 int index=mKeys.indexOf(key);
                 locationModels.remove(index);

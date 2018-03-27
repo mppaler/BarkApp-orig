@@ -80,16 +80,16 @@ public class ParkingListAdapter extends BaseAdapter implements Filterable {
         totalTxt.setText(String.valueOf(s.getTotal_slot()));
 
         if(s.getRatio()==s.getTotal_slot()){
-            fullTxt.setText("FULL!");
+            fullTxt.setText("FULL");
             fullTxt.setTextColor(Color.rgb(255,0,0));
-            fullTxt.setBackgroundColor(Color.rgb(255,255,0));
+
 
 
 
         } else{
             fullTxt.setText("AVAILABLE");
-            fullTxt.setTextColor(Color.rgb(0,128,0));
-            fullTxt.setBackgroundColor(Color.rgb(255,255,0));
+            fullTxt.setTextColor(Color.rgb(100,221,23));
+
 
         }
 

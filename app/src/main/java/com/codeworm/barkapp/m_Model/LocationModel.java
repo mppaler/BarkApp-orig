@@ -39,6 +39,7 @@ public class LocationModel {
         this.key = key;
     }
 
+
     public void setValues(LocationModel newlocationModel) {
         name = newlocationModel.name;
     }

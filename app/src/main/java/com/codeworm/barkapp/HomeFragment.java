@@ -36,6 +36,8 @@ public class HomeFragment extends Fragment {
                 SharedPreferencesManager.getInstance(getActivity()).getAddress() != null){
             btnParkingDetails.setVisibility(View.VISIBLE);
             btnScan.setVisibility(View.GONE);
+
+
         }
 
 

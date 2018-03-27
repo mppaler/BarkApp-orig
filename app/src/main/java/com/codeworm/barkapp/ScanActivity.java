@@ -313,73 +313,83 @@ public class ScanActivity extends AppCompatActivity {
 
         DatabaseReference query = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
 
-        query.child("Location").orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+        query.orderByKey().limitToFirst(2).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                System.out.println("IM HERE ITS OKAY");
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    System.out.println("PLEASE " + childSnapshot.getKey() + childSnapshot.child("qrCode").getValue());
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                    String qr = childSnapshot.child("qrCode").getValue(String.class);
-                    String User = childSnapshot.child("User").getValue(String.class);
-                    String key = childSnapshot.getKey();
+                    final String refKey = ds.getKey();
+                    System.out.println("KEYS " + refKey);
+
+                    DatabaseReference query2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
+                    query2.child(refKey).orderByKey().limitToFirst(4).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
+
+                                String User = childSnapshot.child("user").getValue(String.class);
+                                String key = childSnapshot.getKey();
 
 
-                    if (key.equals(slot_id) && User.isEmpty()) {
-                        System.out.println("GUMANA NA AMP "+ key + slot_id);
+                                if (key.equals(slot_id) && User.isEmpty()) {
+                                    System.out.println("GUMANA NA AMP " + key + slot_id);
 
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
+                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
 
-                        HashMap<String, Object> result_final = new HashMap<>();
-                        //result_final.put(childSnapshot.getKey(), user);
-                        result_final.put("User", user);
+                                    HashMap<String, Object> result_user = new HashMap<>();
+                                    //result_final.put(childSnapshot.getKey(), user);
+                                    result_user.put("user", user);
 
-                        String refKey = childSnapshot.getKey();
-                        System.out.println("POTAS2 " + refKey);
-                        dbref.child("locs").child("Location").child(refKey).updateChildren(result_final);
+
+                                    String childKey = childSnapshot.getKey();
+                                    System.out.println("POTAS2 " + childKey);
+                                    dbref.child("locs").child(refKey).child(childKey).updateChildren(result_user);
+
+                                    System.out.println("KEYS2 "+ refKey + childKey);
+
+
 //                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
-                        System.out.println("ETO NA BOI" + result_final);
-                        Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
+                                    System.out.println("ETO NA BOI" + result_user);
+                                    Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
 
-                    }else if(key.equals(slot_id) && User.equals("unregistered")){
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
+                                } else if (key.equals(slot_id) && User.equals("unregistered")) {
+                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
 
-                        HashMap<String, Object> result_final = new HashMap<>();
+                                    HashMap<String, Object> result_final = new HashMap<>();
 //                        result_final.put(childSnapshot.getKey(), user);
-                        result_final.put("User", user);
-                        String refKey = childSnapshot.getKey();
-                        System.out.println("POTAS2 " + refKey);
-                        dbref.child("locs").child("Location").child(refKey).updateChildren(result_final);
+                                    result_final.put("user", user);
+                                    String childKey = childSnapshot.getKey();
+                                    System.out.println("POTAS2 " + childKey);
+                                    dbref.child(childKey).updateChildren(result_final);
 //                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
-                        System.out.println("ETO NA BOI" + result_final);
-                        Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
-                    }
+                                    System.out.println("ETO NA BOI" + result_final);
+                                    Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    //
+                                }
 
-                    else {
-                        //
-                    }
+                            }
+                        }
 
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
+                        }
+                    });
                 }
-
-                System.out.println("PLS" + dataSnapshot.getValue());
-//                 System.out.println("POTA KA" + scannedData + qr);
-//                     if(qr.equals(scannedData) && User.isEmpty()) {
-//                         mDatabase.child("Racks").child("001").child("001").child("User").setValue(user);
-//                         Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
-//                         System.out.println("POTA KA" + scannedData + qr);
-//                     } else {
-//                         Toast.makeText(ScanActivity.this, "FIREBASE DENIED", Toast.LENGTH_SHORT).show();
-//                     }
             }
+
+
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError){
 
-            }
+                }
         });
     }
+
+
 
     private void setParkingDetails() {
         System.out.println("Inside setParkingDetails");

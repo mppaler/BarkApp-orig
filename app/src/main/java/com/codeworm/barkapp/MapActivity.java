@@ -281,7 +281,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //            }
 //        };
 //        mTotalList.setAdapter(adapter);
-
         databaseReference2.child("locs").addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -371,6 +370,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
+
 
     }
 
