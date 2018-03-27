@@ -51,6 +51,7 @@ dependencies {
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.clans:fab:1.6.4'
+    compile 'de.codecrafters.tableview:tableview:2.8.0'
     testCompile 'junit:junit:4.12'
 }
 

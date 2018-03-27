@@ -5,19 +5,23 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Home" />
+            android:title="HOME"
+            android:iconTint="@android:color/background_light" />
         <item
             android:id="@+id/nav_account"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Account" />
+            android:title="ACCOUNT"
+            android:iconTint="@android:color/background_light"/>
         <item
             android:id="@+id/nav_parking_logs"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Parking Logs" />
+            android:title="PARKING LOGS"
+            android:iconTint="@android:color/background_light"/>
         <item
             android:id="@+id/nav_user_manual"
             android:icon="@drawable/ic_menu_manage"
-            android:title="User Manual" />
+            android:title="USER MANUAL"
+            android:iconTint="@android:color/background_light"/>
     </group>
 
     <!--item android:title="Communicate">

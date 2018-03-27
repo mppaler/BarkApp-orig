@@ -48,18 +48,12 @@ public class AccountFragment extends Fragment {
 //        sMobilenum = preferences.getString("mobilenum", "");
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-
-        txtFullname = (TextView) view.findViewById(R.id.fullname);
-        txtUsername = (TextView) view.findViewById(R.id.username);
-        txtMobilenum = (TextView) view.findViewById(R.id.mobilenum);
         btnLogout = (Button) view.findViewById(R.id.btn_logout);
         listView = (ListView) view.findViewById(R.id.listAccountDetails);
 
         System.out.println("Finish Initialization");
         System.out.println("Value of Fullname in SharedPreference ---> " + SharedPreferencesManager.getInstance(getActivity()).getFullname());
-        txtFullname.setText(SharedPreferencesManager.getInstance(getActivity()).getFullname());
-        txtUsername.setText(SharedPreferencesManager.getInstance(getActivity()).getUsername());
-        txtMobilenum.setText(SharedPreferencesManager.getInstance(getActivity()).getMobilenum());
+
 
         details = new String[]{
                 "FULLNAME : " + SharedPreferencesManager.getInstance(getActivity()).getFullname(),

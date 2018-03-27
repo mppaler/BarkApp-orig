@@ -15,5 +15,9 @@
     <string name="title_scan">Scan QR Code</string>
     <string name="title_find_a_rack">Find a Rack</string>
     <string name="title_parking_details">Parking Details</string>
+    <string name="timestamp">Timestamp</string>
+    <string name="event">Event</string>
+    <string name="area">Parking\n Area</string>
+    <string name="slot_id">Slot\n ID</string>
 
 </resources>

@@ -17,7 +17,7 @@ public class ParkingLog implements Parcelable{
     private String slot_id;
     private List<ParkingLog> mParkingLog;
 
-    public ParkingLog(int id, String timestamp, String event, String parking_area, String slot_id){
+    public ParkingLog(String timestamp, String event, String parking_area, String slot_id){
         this.id = id;
         this.timestamp = timestamp;
         this.event = event;

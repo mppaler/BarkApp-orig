@@ -2,6 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
+    <color name="navigation_background">#161b36</color>
     <color name="colorAccent">#FF4081</color>
     <color name="background_light">#ffffff</color>
+    <color name="table_data_row_even">#11C5CAE9</color>
+    <color name="table_data_row_odd">#33C5CAE9</color>
+    <color name="table_header_text">#CCFFFFFF</color>
 </resources>
