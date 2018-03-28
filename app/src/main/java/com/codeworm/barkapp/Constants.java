@@ -24,6 +24,7 @@ public class Constants {
     public static final String URL_CHANGE_USERNAME = ROOT_URL+"changeUsername.php";
     public static final String URL_CHANGE_MOBILE_NUMBER = ROOT_URL+"changeMobileNumber.php";
     public static final String URL_CHECK_USER_STATUS = ROOT_URL+"checkUserStatus.php";
+    public static final String URL_CHANGE_FULLNAME = ROOT_URL+"changeFullname.php";
 
     public static final String UPDATE_GENERAL_LOG_UPDATE = "update";
     public static final String UPDATE_GENERAL_LOG_REMOVE = "remove";

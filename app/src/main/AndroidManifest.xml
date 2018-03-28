@@ -58,7 +58,8 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ChangeMobileNumberActivity" />
-        <activity android:name=".ChangeMobileNumberVerificationActivity"></activity>
+        <activity android:name=".ChangeMobileNumberVerificationActivity" />
+        <activity android:name=".ChangeFullnameActivity"></activity>
     </application>
 
 </manifest>
