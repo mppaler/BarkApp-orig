@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     HomeFragment homeFragment = new HomeFragment();
     AccountFragment accountFragment = new AccountFragment();
+    UserManualFragment usermanualFragment = new UserManualFragment();
     ParkingLogFragment parkingLogFragment = new ParkingLogFragment();
     ParkingLog parkingLog;
     TextView tvFullname, tvUsername;
@@ -146,6 +147,10 @@ public class MainActivity extends AppCompatActivity
 //            FragmentManager fragmentManager = getSupportFragmentManager();
 //            fragmentManager.beginTransaction().replace(R.id.fragment_container, parkingLogFragment, parkingLogFragment.getTag()).commit();
         } else if (id == R.id.nav_user_manual) {
+//            Intent intent= new Intent(this, UserManualActivity.class);
+//            startActivity(intent);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, usermanualFragment, "usermanualFragment").commit();
             Toast.makeText(this, "User Manual", Toast.LENGTH_SHORT).show();
         }
 

@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#1565c0"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
@@ -29,6 +29,7 @@
                 android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="#1565c0"
                 app:searchBackground="@color/colorPrimary"
                 app:searchSuggestionBackground = "@color/colorPrimary"
                 app:searchCloseIcon = "@drawable/ic_action_navigation_close_inverted"

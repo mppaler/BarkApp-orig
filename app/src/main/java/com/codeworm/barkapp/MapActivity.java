@@ -61,6 +61,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
@@ -281,6 +282,102 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 //            }
 //        };
 //        mTotalList.setAdapter(adapter);
+
+
+    }
+
+
+
+
+
+
+    private static final String TAG = "MapActivity";
+
+    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
+    private static final float DEFAULT_ZOOM = 15f;
+    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
+            new LatLng(-40, -168), new LatLng(71, 136));
+
+
+    //widgets
+    private AutoCompleteTextView mSearchText;
+    private ImageView mGps;
+
+
+    //vars
+    private Boolean mLocationPermissionsGranted = false;
+    private GoogleMap mMap;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
+    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceInfo mPlace;
+    private Marker mMarker;
+    private MarkerOptions options = new MarkerOptions();
+    private ArrayList<Double> coordinates = new ArrayList<Double>();
+    private ArrayList<LatLng> coor = new ArrayList<LatLng>();
+
+
+
+    private DatabaseReference mDatabase;
+
+
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_map);
+
+        Log.v("Example", "onCreate");
+        getIntent().setAction("Already created");
+        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+        //       .findFragmentById(R.id.map);
+        // mapFragment.getMapAsync(this);
+
+        mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
+        mGps = (ImageView) findViewById(R.id.ic_gps);
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        //ListView mTotalList = (ListView) findViewById(R.id.total_slot);
+
+        getLocationPermission();
+
+//  LV
+//        databaseReference2.child("locs").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
+//
+//                    Double lat = ds.child("lat").getValue(Double.class);
+//                    Double lng = ds.child("lng").getValue(Double.class);
+//
+//                    LatLng newLocation2 = new LatLng(lat, lng);
+//                    String key = dataSnapshot.getKey();
+//
+//
+//
+//                    MarkerOptions a = new MarkerOptions()
+//                            .position(newLocation2)
+//                            .title(key);
+//
+//
+//
+//                    Marker myMarker = mMap.addMarker(a);
+//
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//
         databaseReference2.child("locs").addChildEventListener(new ChildEventListener() {
 
             @Override
@@ -307,7 +404,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation)
-                        .title(name));
+                        .title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
                 System.out.println("OY" + ratio +key);
 
 
@@ -371,101 +468,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-
-    }
-
-
-
-
-
-
-    private static final String TAG = "MapActivity";
-
-    private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
-    private static final float DEFAULT_ZOOM = 15f;
-    private static final LatLngBounds LAT_LNG_BOUNDS = new LatLngBounds(
-            new LatLng(-40, -168), new LatLng(71, 136));
-
-
-    //widgets
-    private AutoCompleteTextView mSearchText;
-    private ImageView mGps, mInfo;
-
-
-    //vars
-    private Boolean mLocationPermissionsGranted = false;
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-    private PlaceAutocompleteAdapter mPlaceAutocompleteAdapter;
-    private GoogleApiClient mGoogleApiClient;
-    private PlaceInfo mPlace;
-    private Marker mMarker;
-    private MarkerOptions options = new MarkerOptions();
-    private ArrayList<Double> coordinates = new ArrayList<Double>();
-    private ArrayList<LatLng> coor = new ArrayList<LatLng>();
-
-
-
-    private DatabaseReference mDatabase;
-
-
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
-
-        Log.v("Example", "onCreate");
-        getIntent().setAction("Already created");
-        //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-        //       .findFragmentById(R.id.map);
-        // mapFragment.getMapAsync(this);
-
-        mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
-        mGps = (ImageView) findViewById(R.id.ic_gps);
-        mInfo = (ImageView) findViewById(R.id.place_info);
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        //ListView mTotalList = (ListView) findViewById(R.id.total_slot);
-
-        getLocationPermission();
-
-//  LV
-//        databaseReference2.child("locs").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//
-//                    Double lat = ds.child("lat").getValue(Double.class);
-//                    Double lng = ds.child("lng").getValue(Double.class);
-//
-//                    LatLng newLocation2 = new LatLng(lat, lng);
-//                    String key = dataSnapshot.getKey();
-//
-//
-//
-//                    MarkerOptions a = new MarkerOptions()
-//                            .position(newLocation2)
-//                            .title(key);
-//
-//
-//
-//                    Marker myMarker = mMap.addMarker(a);
-//
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//
     }
 
 
@@ -511,22 +513,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-        mInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: clicked place info");
-                try {
-                    if (mMarker.isInfoWindowShown()) {
-                        mMarker.hideInfoWindow();
-                    } else {
-                        Log.d(TAG, "onClick: place info: " + mPlace.toString());
-                        mMarker.showInfoWindow();
-                    }
-                } catch (NullPointerException e) {
-                    Log.e(TAG, "onClick: NullPointerException: " + e.getMessage());
-                }
-            }
-        });
+
+
 
         hideSoftKeyboard();
     }
@@ -553,7 +541,98 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
                     address.getAddressLine(0));
+
         }
+
+        databaseReference2.child("locs").addChildEventListener(new ChildEventListener() {
+
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+
+                LatLng newLocation = new LatLng(
+                        dataSnapshot.child("lat").getValue(Double.class),
+                        dataSnapshot.child("lng").getValue(Double.class)
+                );
+
+//                LocationModel name = dataSnapshot.child("name").getValue(LocationModel.class);
+//                LocationModel ratio = dataSnapshot.child("ratio").getValue(LocationModel.class);
+                String name = dataSnapshot.child("name").getValue(String.class);
+                Integer ratio = dataSnapshot.child("ratio").getValue(Integer.class);
+//                System.out.println("OGAG"+newLocation);
+
+                String key = dataSnapshot.getKey();
+
+                mLocName.add(name);
+                mTotals.add(ratio);
+                mKeys.add(key);
+                System.out.println("PUTA PLS " + ratio);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(newLocation)
+                        .title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
+                System.out.println("OY" + ratio +key);
+
+
+
+            }
+
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                LatLng newLocation2 = new LatLng(
+                        dataSnapshot.child("lat").getValue(Double.class),
+                        dataSnapshot.child("lng").getValue(Double.class)
+                );
+                System.out.println("DSDS " +dataSnapshot.child("ratio").getValue());
+
+                String key = dataSnapshot.getKey();
+                String name = dataSnapshot.child("name").getValue(String.class);
+                Integer ratio = dataSnapshot.child("ratio").getValue(Integer.class);
+                Integer total = dataSnapshot.child("total").getValue(Integer.class);
+
+                int index = mKeys.indexOf(key);
+                System.out.println("ratio" +ratio);
+
+
+
+
+
+
+
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(newLocation2)
+                        .title(name));
+
+
+
+
+
+
+                System.out.println("TANGINA MO MARIAH " +  dataSnapshot.child("ratio").getValue());
+
+            }
+
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void getDeviceLocation(){

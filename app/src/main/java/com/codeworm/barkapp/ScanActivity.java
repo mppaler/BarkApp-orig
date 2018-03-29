@@ -74,7 +74,7 @@ public class ScanActivity extends AppCompatActivity {
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Scan");
+                integrator.setPrompt("");
                 integrator.setBeepEnabled(false);
                 integrator.setCameraId(0);
                 integrator.setBarcodeImageEnabled(false);
