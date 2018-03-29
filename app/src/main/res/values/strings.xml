@@ -12,4 +12,8 @@
     <string name="title_activity_parking_details">ParkingDetailsActivity</string>
     <string name="google_maps_API_key">AIzaSyBQLxbjEwpeWSGHw3MdmzW405x_ZPQOdMY</string>
     <string name="auth_failed">Hello blank fragment</string>
+    <string name="title_scan">Scan QR Code</string>
+    <string name="title_find_a_rack">Find a Rack</string>
+    <string name="title_parking_details">Parking Details</string>
+
 </resources>

@@ -6,9 +6,10 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient_inside_app_bg"
     android:orientation="vertical"
+    android:padding="10dp"
+    android:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar"
     app:layout_collapseParallaxMultiplier="1.0"
-    tools:context="com.codeworm.barkapp.ChangeUsernameActivity"
-    android:padding="10dp">
+    tools:context="com.codeworm.barkapp.ChangeUsernameActivity">
 
 
     <ScrollView

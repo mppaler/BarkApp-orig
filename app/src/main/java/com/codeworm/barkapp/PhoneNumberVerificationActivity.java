@@ -254,7 +254,7 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
         }
 
         public void proceedToChangePassword(){
-            Intent intent = new Intent(getApplicationContext(), ChangePasswordActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ForgotPasswordPageThreeActivity.class);
             intent.putExtra("sUsername", sUsername);
             intent.putExtra("sMobileNum", sMobileNum);
             startActivity(intent);

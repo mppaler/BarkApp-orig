@@ -2,6 +2,8 @@ package com.codeworm.barkapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,7 +47,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -47,9 +57,10 @@ public class MainActivity extends AppCompatActivity
     AccountFragment accountFragment = new AccountFragment();
     ParkingLogFragment parkingLogFragment = new ParkingLogFragment();
     ParkingLog parkingLog;
+    TextView tvFullname, tvUsername;
     public ProgressBar progressBar;
     private ArrayList<ParkingLog> mParkingLog = new ArrayList<ParkingLog>();
-
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,21 +69,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, homeFragment.getTag()).commit();
-
-        /*
-        *       Yung dating email chuchu icon
-        * */
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -84,14 +82,18 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView tvFullname = (TextView) headerView.findViewById(R.id.nav_fullname);
-        TextView tvUsername = (TextView) headerView.findViewById(R.id.nav_username);
+        tvFullname = (TextView) headerView.findViewById(R.id.nav_fullname);
+        tvUsername = (TextView) headerView.findViewById(R.id.nav_username);
         tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
         tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
 
+    }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
+        tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
     }
 
     @Override
@@ -134,10 +136,10 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, homeFragment.getTag()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, "homefragment").commit();
         } else if (id == R.id.nav_account) {
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment, accountFragment.getTag()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment, "accountfragment").commit();
         } else if (id == R.id.nav_parking_logs) {
             ParkingLogAsyncTask parkingLogAsyncTask = new ParkingLogAsyncTask();
             parkingLogAsyncTask.execute(SharedPreferencesManager.getInstance(this).getUsername());
@@ -276,4 +278,6 @@ public class MainActivity extends AppCompatActivity
         }
         return baos.toString();
     }
+
+
 }

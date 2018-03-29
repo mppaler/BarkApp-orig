@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -54,7 +56,7 @@ public class ScanActivity extends AppCompatActivity {
     String scannedData;
     Button scanBtn;
     boolean flagMatch, flagSuccess;
-
+    LoadingDialog loadingDialog;
 
     private ArrayList<String> list_qr = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,9 +177,10 @@ public class ScanActivity extends AppCompatActivity {
 
 
     public void validateQR(final String inputData) {
-
-
-
+        loadingDialog = new LoadingDialog(ScanActivity.this);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SCANNED_QR,
                 new Response.Listener<String>() {
                     @Override
@@ -230,7 +233,6 @@ public class ScanActivity extends AppCompatActivity {
 
     public void validateStatus(final String slot_id ){
 
-
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CHECK_PARKING_STATUS,
                 new Response.Listener<String>() {
                     @Override
@@ -247,17 +249,14 @@ public class ScanActivity extends AppCompatActivity {
 
 
                                 if(jsonObject.getString("slot_status").equals("vacant") && jsonObject.getString("user_type").equals("unregistered")){
+                                    //ONLY OCCUPIED IS ALLOWED
+                                    loadingDialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), "NO BICYCLE IS PARKED", Toast.LENGTH_LONG).show();
 
-
-                                    //AVAILABLE FOR QR SCANNING
-                                    registerUser(slot_id);
-
-                                    setParkingDetails();    //SET PARKING DETAILS IN SHARED PREFERENCE
-                                    updateGeneralLog(slot_id, SharedPreferencesManager.getInstance(getApplicationContext()).getUsername(), Constants.UPDATE_GENERAL_LOG_UPDATE);  //UPDATE USER_TYPE AND SET USERNAME IN GENERAL_LOG
-                                    openParkingDetails();
                                 }
                                 else if(jsonObject.getString("slot_status").equals("vacant") && jsonObject.getString("user_type").equals("registered")){
                                     //IMPOSSIBLE RESULT
+                                    loadingDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "IMPOSSIBLE RESULT", Toast.LENGTH_LONG).show();
                                 }
                                 else if(jsonObject.getString("slot_status").equals("occupied") && jsonObject.getString("user_type").equals("unregistered")){
@@ -265,11 +264,13 @@ public class ScanActivity extends AppCompatActivity {
                                     registerUser(slot_id);
                                     setParkingDetails();    //SET PARKING DETAILS IN SHARED PREFERENCE
                                     updateGeneralLog(slot_id, SharedPreferencesManager.getInstance(getApplicationContext()).getUsername(), Constants.UPDATE_GENERAL_LOG_UPDATE);  //UPDATE USER_TYPE AND SET USERNAME IN GENERAL_LOG
+                                    loadingDialog.dismiss();
                                     openParkingDetails();
+
                                 }
                                 else if(jsonObject.getString("slot_status").equals("occupied") && jsonObject.getString("user_type").equals("registered")){
                                     //SLOT IS ALREADY TAKEN
-
+                                    loadingDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "THIS SLOT IS ALREADY TAKEN", Toast.LENGTH_LONG).show();
                                 }
 //                                setParkingDetails();

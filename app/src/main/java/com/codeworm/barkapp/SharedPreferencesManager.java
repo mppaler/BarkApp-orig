@@ -13,6 +13,7 @@ public class SharedPreferencesManager {
     private static final String SHARED_PREF_NAME = "mysharedpref";
     private static final String KEY_FULLNAME = "fullname";
     private static final String KEY_USERNAME = "username";
+    private static final String KEY_PASSWORD = "password";
     private static final String KEY_MOBILENUM = "mobilenum";
     private static final String KEY_USERID = "userid";
     private static final String KEY_QR = "code";
@@ -33,12 +34,13 @@ public class SharedPreferencesManager {
         return mInstance;
     }
 
-    public boolean loginUser(String fullname, String username, String mobilenumber, int id){
+    public boolean loginUser(String fullname, String username, String password, String mobilenumber, int id){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(KEY_FULLNAME, fullname);
         editor.putString(KEY_USERNAME, username);
+        editor.putString(KEY_PASSWORD, password);
         editor.putString(KEY_MOBILENUM, mobilenumber);
         editor.putInt(KEY_USERID, id);
 
@@ -87,9 +89,30 @@ public class SharedPreferencesManager {
         editor.apply();
     }
 
+    public String getPassword(){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getString(KEY_PASSWORD, null);
+    }
+
+    public void setPassword(String password){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_PASSWORD, password);
+
+        editor.apply();
+    }
+
     public String getMobilenum(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_MOBILENUM, null);
+    }
+
+    public void setMobilenum(String mobilenum){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_MOBILENUM, mobilenum);
+
+        editor.apply();
     }
 
     public boolean setCode(String code){

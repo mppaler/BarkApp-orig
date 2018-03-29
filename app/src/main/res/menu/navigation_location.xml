@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_location"
+        android:icon="@drawable/ic_location_black_24dp"
+        android:title="@string/title_find_a_rack"
+        android:iconTint="@color/background_light"/>
+</menu>

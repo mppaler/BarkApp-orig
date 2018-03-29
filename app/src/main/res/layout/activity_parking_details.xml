@@ -4,21 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_inside_app_bg"
     tools:context="com.codeworm.barkapp.ParkingDetailsActivity">
+
+
+    <ImageView
+        android:id="@+id/display_picture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/imageView3"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="150dp"-->
+            <!--app:srcCompat="@drawable/bicycle_logo"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true" />-->
+
+    <TextView
+        android:id="@+id/account_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/display_picture"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="10dp"
+        android:text="PARKING DETAILS"
+        android:textAlignment="center"
+        android:textColor="@color/cast_libraries_material_featurehighlight_text_header_color"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your bicycle is currently parked at this area. Please click the button below if you wish to claim it."
+        android:textColor="#FFF"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounder_corner"
         android:orientation="vertical"
-        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="190dp"
-            android:layout_height="137dp"
-            app:srcCompat="@drawable/bicycle_logo" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout">
 
         <TextView
             android:id="@+id/txt_slot_id"
@@ -26,8 +67,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-
-            android:text="Slot ID"
+            android:textColor="#000000"
+            android:text="SLOT ID:"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -39,7 +80,12 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:text="Input Slot ID"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:paddingBottom="10dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
 
         <TextView
             android:id="@+id/txt_parking_area"
@@ -47,8 +93,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-
-            android:text="Parking Area"
+            android:textColor="#000000"
+            android:text="PARKING AREA:"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -60,7 +106,13 @@
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:text="Input Parking Area"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:paddingBottom="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black" />
 
         <TextView
             android:id="@+id/txt_address"
@@ -68,32 +120,38 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-
-            android:text="Address"
+            android:textColor="#000000"
+            android:text="ADDRESS:"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
 
         <TextView
             android:id="@+id/address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:text="Input Address"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:paddingBottom="10dp"/>
+
 
     </LinearLayout>
 
+
     <Button
         android:id="@+id/scan_claim_btn"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/parking_details_button_bg"
+        android:drawableLeft="@drawable/icon_qr"
+        android:gravity="left|center_vertical"
+        android:text="SCAN QR CODE TO CLAIM"
+        android:paddingRight="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-
-        android:background="@android:color/holo_red_light"
-        android:text="SCAN QR CODE TO CLAIM YOUR BICYCLE" />
+        android:layout_centerInParent="true"
+        />
 
 
 </RelativeLayout>
