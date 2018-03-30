@@ -337,7 +337,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //       .findFragmentById(R.id.map);
         // mapFragment.getMapAsync(this);
 
-        mSearchText = (AutoCompleteTextView) findViewById(R.id.input_search);
         mGps = (ImageView) findViewById(R.id.ic_gps);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -434,8 +433,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-
-
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation2)
                         .title(name));
@@ -482,28 +479,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .enableAutoManage(this, this)
                 .build();
 
-        mSearchText.setOnItemClickListener(mAutocompleteClickListener);
 
-        mPlaceAutocompleteAdapter = new PlaceAutocompleteAdapter(this, mGoogleApiClient,
-                LAT_LNG_BOUNDS, null);
 
-        mSearchText.setAdapter(mPlaceAutocompleteAdapter);
-
-        mSearchText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH
-                        || actionId == EditorInfo.IME_ACTION_DONE
-                        || keyEvent.getAction() == KeyEvent.ACTION_DOWN
-                        || keyEvent.getAction() == KeyEvent.KEYCODE_ENTER) {
-
-                    //execute our method for searching
-                    geoLocate();
-                }
-
-                return false;
-            }
-        });
 
         mGps.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -519,121 +496,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         hideSoftKeyboard();
     }
 
-    private void geoLocate() {
-        Log.d(TAG, "geoLocate: geolocating");
 
-        String searchString = mSearchText.getText().toString();
-
-        Geocoder geocoder = new Geocoder(MapActivity.this);
-        List<Address> list = new ArrayList<>();
-        try {
-            list = geocoder.
-                    getFromLocationName(searchString, 1);
-        } catch (IOException e) {
-            Log.e(TAG, "geoLocate: IOException: " + e.getMessage());
-        }
-
-        if (list.size() > 0) {
-            Address address = list.get(0);
-
-            Log.d(TAG, "geoLocate: found a location: " + address.toString());
-            //Toast.makeText(this, address.toString(), Toast.LENGTH_SHORT).show();
-
-            moveCamera(new LatLng(address.getLatitude(), address.getLongitude()), DEFAULT_ZOOM,
-                    address.getAddressLine(0));
-
-        }
-
-        databaseReference2.child("locs").addChildEventListener(new ChildEventListener() {
-
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-
-                LatLng newLocation = new LatLng(
-                        dataSnapshot.child("lat").getValue(Double.class),
-                        dataSnapshot.child("lng").getValue(Double.class)
-                );
-
-//                LocationModel name = dataSnapshot.child("name").getValue(LocationModel.class);
-//                LocationModel ratio = dataSnapshot.child("ratio").getValue(LocationModel.class);
-                String name = dataSnapshot.child("name").getValue(String.class);
-                Integer ratio = dataSnapshot.child("ratio").getValue(Integer.class);
-//                System.out.println("OGAG"+newLocation);
-
-                String key = dataSnapshot.getKey();
-
-                mLocName.add(name);
-                mTotals.add(ratio);
-                mKeys.add(key);
-                System.out.println("PUTA PLS " + ratio);
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(newLocation)
-                        .title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
-                System.out.println("OY" + ratio +key);
-
-
-
-            }
-
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                LatLng newLocation2 = new LatLng(
-                        dataSnapshot.child("lat").getValue(Double.class),
-                        dataSnapshot.child("lng").getValue(Double.class)
-                );
-                System.out.println("DSDS " +dataSnapshot.child("ratio").getValue());
-
-                String key = dataSnapshot.getKey();
-                String name = dataSnapshot.child("name").getValue(String.class);
-                Integer ratio = dataSnapshot.child("ratio").getValue(Integer.class);
-                Integer total = dataSnapshot.child("total").getValue(Integer.class);
-
-                int index = mKeys.indexOf(key);
-                System.out.println("ratio" +ratio);
-
-
-
-
-
-
-
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(newLocation2)
-                        .title(name));
-
-
-
-
-
-
-                System.out.println("TANGINA MO MARIAH " +  dataSnapshot.child("ratio").getValue());
-
-            }
-
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void getDeviceLocation(){
         Log.d(TAG, "getDeviceLocation: getting the devices current location");
