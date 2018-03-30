@@ -93,8 +93,11 @@ public class ScanActivity extends AppCompatActivity {
         if(result!=null) {
             scannedData = result.getContents();
             System.out.println("Value of scannedData is ----->" + scannedData);
-            validateQR(scannedData);
-            validateQR_FB(scannedData);
+
+            if(scannedData != null){
+                validateQR(scannedData);
+                validateQR_FB(scannedData);
+            }
 
         }
 

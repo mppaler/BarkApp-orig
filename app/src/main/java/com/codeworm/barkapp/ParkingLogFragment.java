@@ -17,6 +17,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,7 +39,9 @@ import java.util.List;
 import java.util.Map;
 
 import de.codecrafters.tableview.SortableTableView;
+import de.codecrafters.tableview.listeners.OnScrollListener;
 import de.codecrafters.tableview.model.TableColumnWeightModel;
+import de.codecrafters.tableview.toolkit.EndlessOnScrollListener;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 import de.codecrafters.tableview.toolkit.SortStateViewProviders;
 import de.codecrafters.tableview.toolkit.TableDataRowBackgroundProviders;
@@ -51,22 +54,23 @@ import static com.codeworm.barkapp.R.id.view;
  * A simple {@link Fragment} subclass.
  */
 public class ParkingLogFragment extends Fragment {
-    private ListView lvParkingLog;
-    private ParkingLogAdapter adapter;
+    private ParkingLogAdapter parkingLogAdapter;
     private List<ParkingLog> mParkingLog = new ArrayList<ParkingLog>();
     private List<ParkingLog> holder = new ArrayList<ParkingLog>();
-    private List<ParkingLog> record = new ArrayList<ParkingLog>();
     public Handler mHandler;
     public boolean isLoading = false;
     public int currentId=0;
-    public int ctr = 1;
-    public boolean flag = false;
+    public View ftView;
     TextView tvNoRecordFound;
     ParkingLogFactory parkingLogFactory = new ParkingLogFactory();
+    SortableTableView tableView;
+    ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
     }
 
     @Override
@@ -75,25 +79,51 @@ public class ParkingLogFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_parking_log, container, false);
 
-        SortableTableView tableView = (SortableTableView) view.findViewById(R.id.tableView);
+        LayoutInflater li = (LayoutInflater)getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ftView = li.inflate(R.layout.footer_view, null);
+
+        mHandler = new MyHandler();
+        tvNoRecordFound = (TextView) view.findViewById(R.id.tv_NoRecordFound);
+        tableView = (SortableTableView) view.findViewById(R.id.tableView);
+        progressBar = (ProgressBar) view.findViewById(R.id.loadingList);
+
+
+        if(parkingLogFactory.getParkingLogList().isEmpty()){
+            tvNoRecordFound.setVisibility(View.VISIBLE);
+            tableView.setVisibility(View.GONE);
+        }
+
         initializeTableView(tableView, getActivity().getApplicationContext());
 
         //final ParkingLogTableView parkingLogTableView = (ParkingLogTableView) findViewById(R.id.tableView);
-        if(tableView != null){
-            System.out.println("Value of parkingLogList is " + parkingLogFactory.getParkingLogList());
-            final ParkingLogAdapter parkingLogAdapter = new ParkingLogAdapter(getActivity().getApplicationContext(), parkingLogFactory.getParkingLogList(), tableView);
-            tableView.setDataAdapter(parkingLogAdapter);
-            tableView.setSwipeToRefreshEnabled(false);
-            tableView.setLongClickable(false);
-            tableView.setClickable(false);
+        mParkingLog = parkingLogFactory.getParkingLogList();
 
-//            parkingLogTableView.setSwipeToRefreshListener(new SwipeToRefreshListener() {
-//                @Override
-//                public void onRefresh(RefreshIndicator refreshIndicator) {
+
+        parkingLogAdapter = new ParkingLogAdapter(getActivity().getApplicationContext(), mParkingLog, tableView);
+
+        tableView.setDataAdapter(parkingLogAdapter);
+        tableView.setSwipeToRefreshEnabled(false);
+        tableView.setLongClickable(false);
+        tableView.setClickable(false);
+
+//        tableView.addOnScrollListener(new OnScrollListener() {
+//            @Override
+//            public void onScroll(ListView tableDataView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                if(tableDataView.getLastVisiblePosition() == totalItemCount-1){
+//                    progressBar.setVisibility(View.VISIBLE);
+//                    /*Thread thread = new ThreadGetMoreData();
+//                    thread.start();*/
+//                    refreshList();
 //
 //                }
-//            });
-        }
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(ListView tableDateView, ScrollState scrollState) {
+//
+//            }
+//        });
+
 
         return view;
     }
@@ -142,26 +172,48 @@ public class ParkingLogFragment extends Fragment {
 
     }
 
-    /*public class MyHandler extends Handler {
+    public List<ParkingLog> getData(){
+        int size = mParkingLog.size();
+        List<ParkingLog> partialLogList = new ArrayList<>();
+        int ctr;
+        if((size-currentId)>20){
+            for (ctr = currentId; ctr < 20; ctr++) {
+                partialLogList.add((ParkingLog) mParkingLog.get(ctr+currentId));
+            }
+            currentId=ctr;
+        }else{
+            for (ctr = 0; ctr < size-currentId; ctr++) {
+                partialLogList.add((ParkingLog) mParkingLog.get(currentId));
+
+            }
+            currentId=ctr;
+        }
+
+        return partialLogList;
+    }
+
+    public class MyHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 0:
                     //Add loading view during search processing
-                    lvParkingLog.addFooterView(ftView);
+
                     break;
                 case 1:
                     //Update data adapter and UI
-                    adapter.addListItemToAdapter((ArrayList<ParkingLog>)msg.obj);
+
+                    parkingLogAdapter.addAll((ArrayList<ParkingLog>)msg.obj);
+                    parkingLogAdapter.notifyDataSetChanged();
                     //Remove loading view after update listview
-                    lvParkingLog.removeFooterView(ftView);
+                    progressBar.setVisibility(View.GONE);
                     isLoading=false;
                     break;
                 default:
                     break;
             }
         }
-    }*/
+    }
 
     private ArrayList<ParkingLog> getMoreData() {
         System.out.println("Getting more data..");
@@ -178,14 +230,6 @@ public class ParkingLogFragment extends Fragment {
                 currentId++;
             }
         }
-        //Sample code get new data :P
-//        lst.add(new Product(++currentId, "iPhone4", 200, "Apple iPhone4 16GB"));
-//        lst.add(new Product(++currentId, "iPhone4S", 250, "Apple iPhone4S 16GB"));
-//        lst.add(new Product(++currentId, "iPhone5", 300, "Apple iPhone5 16GB"));
-//        lst.add(new Product(++currentId, "iPhone5S", 350, "Apple iPhone5S 16GB"));
-//        lst.add(new Product(++currentId, "iPhone6", 400, "Apple iPhone6 16GB"));
-//        lst.add(new Product(++currentId, "iPhone6S", 450, "Apple iPhone6S 16GB"));
-//        lst.add(new Product(++currentId, "iPhone7", 500, "Apple iPhone7 16GB"));
         return lst;
     }
     public class ThreadGetMoreData extends Thread {
@@ -194,7 +238,7 @@ public class ParkingLogFragment extends Fragment {
             //Add footer view after get data
             mHandler.sendEmptyMessage(0);
             //Search more data
-            ArrayList<ParkingLog> lstResult = getMoreData();
+            List<ParkingLog> lstResult = getData();
             //Delay time to show loading footer when debug, remove it when release
             try {
                 Thread.sleep(3000);
@@ -206,6 +250,12 @@ public class ParkingLogFragment extends Fragment {
             mHandler.sendMessage(msg);
 
         }
+    }
+
+    public void refreshList(){
+        parkingLogAdapter.addAll(getData());
+        parkingLogAdapter.notifyDataSetChanged();
+        progressBar.setVisibility(View.GONE);
     }
 
 }
