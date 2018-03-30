@@ -48,21 +48,15 @@ public class AccountFragment extends Fragment {
 //        sMobilenum = preferences.getString("mobilenum", "");
         View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-
-        txtFullname = (TextView) view.findViewById(R.id.fullname);
-        txtUsername = (TextView) view.findViewById(R.id.username);
-        txtMobilenum = (TextView) view.findViewById(R.id.mobilenum);
         btnLogout = (Button) view.findViewById(R.id.btn_logout);
         listView = (ListView) view.findViewById(R.id.listAccountDetails);
 
         System.out.println("Finish Initialization");
         System.out.println("Value of Fullname in SharedPreference ---> " + SharedPreferencesManager.getInstance(getActivity()).getFullname());
-        txtFullname.setText(SharedPreferencesManager.getInstance(getActivity()).getFullname());
-        txtUsername.setText(SharedPreferencesManager.getInstance(getActivity()).getUsername());
-        txtMobilenum.setText(SharedPreferencesManager.getInstance(getActivity()).getMobilenum());
+
 
         details = new String[]{
-                "FULLNAME : " + SharedPreferencesManager.getInstance(getActivity()).getFullname(),
+                "FULL NAME : " + SharedPreferencesManager.getInstance(getActivity()).getFullname(),
                 "USERNAME : " + SharedPreferencesManager.getInstance(getActivity()).getUsername(),
                 "PASSWORD : " + hidePassword(SharedPreferencesManager.getInstance(getActivity()).getPassword()),
                 "MOBILE NUMBER : " + SharedPreferencesManager.getInstance(getActivity()).getMobilenum()
@@ -76,7 +70,7 @@ public class AccountFragment extends Fragment {
                 System.out.println("You clicked " + position);
                 System.out.println("You clicked " + details[position]);
                 switch (position){
-                    case 0: Toast.makeText(getActivity(), "Fullname cannot be changed.", Toast.LENGTH_SHORT).show(); break;
+                    case 0: startActivity(new Intent(getActivity().getApplicationContext(), ChangeFullnameActivity.class)); break;
                     case 1: startActivity(new Intent(getActivity().getApplicationContext(), ChangeUsernameActivity.class)); break;
                     case 2: startActivity(new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class)); break;
                     case 3: startActivity(new Intent(getActivity().getApplicationContext(), ChangeMobileNumberActivity.class)); break;
@@ -99,6 +93,7 @@ public class AccountFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        details[0] = "FULL NAME : " + SharedPreferencesManager.getInstance(getActivity()).getFullname();
         details[1] = "USERNAME : " + SharedPreferencesManager.getInstance(getActivity()).getUsername();
         details[2] = "PASSWORD : " + hidePassword(SharedPreferencesManager.getInstance(getActivity()).getPassword());
         details[3] = "MOBILE NUMBER : " + SharedPreferencesManager.getInstance(getActivity()).getMobilenum();

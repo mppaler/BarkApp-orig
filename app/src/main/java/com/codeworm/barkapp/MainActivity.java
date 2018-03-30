@@ -57,10 +57,8 @@ public class MainActivity extends AppCompatActivity
     AccountFragment accountFragment = new AccountFragment();
     UserManualFragment usermanualFragment = new UserManualFragment();
     ParkingLogFragment parkingLogFragment = new ParkingLogFragment();
-    ParkingLog parkingLog;
+    ParkingLogFactory parkingLogFactory = new ParkingLogFactory();
     TextView tvFullname, tvUsername;
-    public ProgressBar progressBar;
-    private ArrayList<ParkingLog> mParkingLog = new ArrayList<ParkingLog>();
     LoadingDialog loadingDialog;
 
     @Override
@@ -142,6 +140,10 @@ public class MainActivity extends AppCompatActivity
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, accountFragment, "accountfragment").commit();
         } else if (id == R.id.nav_parking_logs) {
+            loadingDialog = new LoadingDialog(this);
+            loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            loadingDialog.setCancelable(false);
+            loadingDialog.show();
             ParkingLogAsyncTask parkingLogAsyncTask = new ParkingLogAsyncTask();
             parkingLogAsyncTask.execute(SharedPreferencesManager.getInstance(this).getUsername());
 //            FragmentManager fragmentManager = getSupportFragmentManager();
@@ -160,15 +162,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     public class ParkingLogAsyncTask extends AsyncTask<String,Void,Void>{
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBarSmall);
+
+        List<ParkingLog> mParkingLog = new ArrayList<ParkingLog>();
         @Override
         protected void onPreExecute() {
-            progressBar.setVisibility(View.VISIBLE);
+
             super.onPreExecute();
         }
 
         @Override
         protected Void doInBackground(String... params) {
+
             String response = postData(params);
             System.out.println("Response is --> " + response);
 
@@ -201,7 +205,7 @@ public class MainActivity extends AppCompatActivity
                     //                                parkingLog.setSlot_id(slot_id);
                     System.out.println("Add data to ArrayList");
                     //                                System.out.println("Value of parkingLog is " + parkingLog);
-                    mParkingLog.add(new ParkingLog(i, timestamp, event, parking_area, slot_id));
+                    mParkingLog.add(new ParkingLog(timestamp, event, parking_area, slot_id));
 
                 }
             } catch (JSONException e) {
@@ -214,13 +218,17 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            progressBar.setVisibility(View.INVISIBLE);
-            Bundle bundle = new Bundle();
-//            bundle.putStringArrayList("arrayListOfLog", mParkingLog);
-            bundle.putParcelableArrayList("arrayListOfLog", mParkingLog);
-            parkingLogFragment.setArguments(bundle);
-            System.out.println("Value of mParkingLog is --> " + mParkingLog);
-            System.out.println("Value of arrayListOfLog is --> " + bundle.getParcelableArrayList("arrayListOfLog"));
+            loadingDialog.dismiss();
+
+            System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+
+            if(mParkingLog.size() != (parkingLogFactory.getParkingLogList()).size()){
+                parkingLogFactory.clearParkingLogList();        //CLEAR DATA FROM PARKING LOG LIST
+                System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+                parkingLogFactory.setParkingLogList(mParkingLog);       //ADD THE NEW SET OF DATA IN PARKING LOG
+                System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+            }
+
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, parkingLogFragment, parkingLogFragment.getTag()).commit();
         }

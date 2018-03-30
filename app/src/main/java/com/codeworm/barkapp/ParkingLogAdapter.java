@@ -8,12 +8,15 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.toolkit.LongPressAwareTableDataAdapter;
+
 /**
  * Created by Harvie Marcelino on 02/20/2018.
  */
 
-public class ParkingLogAdapter extends BaseAdapter {
-    private Context mContext;
+public class ParkingLogAdapter extends LongPressAwareTableDataAdapter<ParkingLog> {
+    /*private Context mContext;
     private List<ParkingLog> mParkingLog;
 
     public ParkingLogAdapter(Context mContext, List<ParkingLog> mParkingLog){
@@ -60,5 +63,61 @@ public class ParkingLogAdapter extends BaseAdapter {
         view.setTag(mParkingLog.get(position).getId());
 
         return view;
+    }*/
+
+    private static final int TEXT_SIZE = 14;
+
+    public ParkingLogAdapter(final Context context, final List<ParkingLog> data, final TableView<ParkingLog> tableView) {
+        super(context, data, tableView);
+    }
+
+    @Override
+    public View getDefaultCellView(int rowIndex, int columnIndex, ViewGroup parentView) {
+        ParkingLog parkingLog = getRowData(rowIndex);
+        View renderedView = null;
+
+        switch (columnIndex) {
+            case 0:
+                renderedView = getView(parkingLog, parentView, columnIndex);
+                break;
+            case 1:
+                renderedView = getView(parkingLog, parentView, columnIndex);;
+                break;
+            case 2:
+                renderedView = getView(parkingLog, parentView, columnIndex);;
+                break;
+            case 3:
+                renderedView = getView(parkingLog, parentView, columnIndex);;
+                break;
+        }
+
+        return renderedView;
+    }
+
+    @Override
+    public View getLongPressCellView(int rowIndex, int columnIndex, ViewGroup parentView) {
+        return null;
+    }
+
+    private View getView(ParkingLog parkingLog, ViewGroup parentView, int columnIndex){
+        TextView textView = new TextView(getContext());
+        switch (columnIndex) {
+            case 0:
+                textView.setText(parkingLog.getTimestamp());
+                break;
+            case 1:
+                textView.setText(parkingLog.getEvent());
+                break;
+            case 2:
+                textView.setText(parkingLog.getParking_area());
+                break;
+            case 3:
+                textView.setText(parkingLog.getSlot_id());
+                break;
+        }
+        textView.setPadding(20, 10, 20, 10);
+        textView.setTextSize(TEXT_SIZE);
+
+        return textView;
     }
 }

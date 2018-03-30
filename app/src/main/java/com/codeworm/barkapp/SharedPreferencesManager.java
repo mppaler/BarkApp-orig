@@ -76,6 +76,14 @@ public class SharedPreferencesManager {
         return sharedPreferences.getString(KEY_FULLNAME, null);
     }
 
+    public void setFullname(String fullname){
+        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_FULLNAME, fullname);
+
+        editor.apply();
+    }
+
     public String getUsername(){
         SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_USERNAME, null);
