@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAVOFF9gTLLNF_3xcV62YY0UJGqlgf1sfI" />
+            android:value="AIzaSyBQLxbjEwpeWSGHw3MdmzW405x_ZPQOdMY" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -61,6 +61,7 @@
         <activity android:name=".ChangeMobileNumberActivity" />
         <activity android:name=".ChangeMobileNumberVerificationActivity" />
         <activity android:name=".UserManualActivity"></activity>
+        <activity android:name=".ChangeFullnameActivity"></activity>
     </application>
 
 </manifest>

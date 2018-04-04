@@ -136,7 +136,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         public String getMacAddress(){
-            WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+            WifiManager manager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             WifiInfo info = manager.getConnectionInfo();
             return info.getMacAddress();
         }
