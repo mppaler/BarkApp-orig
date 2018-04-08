@@ -8,15 +8,171 @@
     tools:context="com.codeworm.barkapp.ParkingDetailsActivity">
 
 
-    <ImageView
-        android:id="@+id/display_picture"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appToolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:animateLayoutChanges="false"
+        android:background="#002171"
+        android:elevation="6dp"
+        android:gravity="left|start"
+        android:minHeight="56dp"
+        android:textAlignment="viewStart"
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/app_name"
+        app:titleTextColor="@android:color/white" />
 
-        <!--<ImageView-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appToolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/display_picture"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/appToolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="20dp"
+                app:srcCompat="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/account_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/display_picture"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="10dp"
+                android:text="PARKING DETAILS"
+                android:textAlignment="center"
+                android:textColor="@color/cast_libraries_material_featurehighlight_text_header_color"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/parking_details_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/linearLayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/account_title"
+                android:layout_marginBottom="16dp"
+                android:text="Your bicycle is currently parked at this area. Please click the button below if you wish to claim it."
+                android:textColor="#FFF" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/rounder_corner"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_slot_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="SLOT ID:"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/slot_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Input Slot ID"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/txt_parking_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="PARKING AREA:"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/parking_area"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Input Parking Area"
+                    android:textSize="18sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/txt_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="ADDRESS:"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Input Address"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/scan_claim_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/parking_details_button_bg"
+                android:drawableLeft="@drawable/icon_qr"
+                android:gravity="left|center_vertical"
+                android:paddingRight="5dp"
+                android:text="SCAN QR CODE TO CLAIM" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!--<ImageView-->
             <!--android:id="@+id/imageView3"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="150dp"-->
@@ -24,134 +180,6 @@
             <!--android:layout_alignParentTop="true"-->
             <!--android:layout_alignParentLeft="true"-->
             <!--android:layout_alignParentStart="true" />-->
-
-    <TextView
-        android:id="@+id/account_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/display_picture"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="10dp"
-        android:text="PARKING DETAILS"
-        android:textAlignment="center"
-        android:textColor="@color/cast_libraries_material_featurehighlight_text_header_color"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Your bicycle is currently parked at this area. Please click the button below if you wish to claim it."
-        android:textColor="#FFF"
-        android:layout_above="@+id/linearLayout"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="16dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounder_corner"
-        android:orientation="vertical"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_centerVertical="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout">
-
-        <TextView
-            android:id="@+id/txt_slot_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="#000000"
-            android:text="SLOT ID:"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/slot_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Input Slot ID"
-            android:textSize="18sp"
-            android:paddingBottom="10dp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black" />
-
-        <TextView
-            android:id="@+id/txt_parking_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="#000000"
-            android:text="PARKING AREA:"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/parking_area"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Input Parking Area"
-            android:textSize="18sp"
-            android:paddingBottom="10dp"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black" />
-
-        <TextView
-            android:id="@+id/txt_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:textColor="#000000"
-            android:text="ADDRESS:"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            />
-
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="10dp"
-            android:text="Input Address"
-            android:textSize="18sp"
-            android:paddingBottom="10dp"/>
-
-
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/scan_claim_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/parking_details_button_bg"
-        android:drawableLeft="@drawable/icon_qr"
-        android:gravity="left|center_vertical"
-        android:text="SCAN QR CODE TO CLAIM"
-        android:paddingRight="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        />
 
 
 </RelativeLayout>

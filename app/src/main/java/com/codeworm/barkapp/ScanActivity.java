@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -57,6 +59,7 @@ public class ScanActivity extends AppCompatActivity {
     Button scanBtn;
     boolean flagMatch, flagSuccess;
     LoadingDialog loadingDialog;
+    Toolbar toolbar;
 
     private ArrayList<String> list_qr = new ArrayList<>();
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +67,12 @@ public class ScanActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scan);
         final Activity activity =this;
         scanBtn = (Button)findViewById(R.id.scan_btn2);
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
 
-
-
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
 
         scanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -250,11 +255,10 @@ public class ScanActivity extends AppCompatActivity {
 
                                 System.out.println("NAKAPASOK AKO");
 
-
                                 if(jsonObject.getString("slot_status").equals("vacant") && jsonObject.getString("user_type").equals("unregistered")){
                                     //ONLY OCCUPIED IS ALLOWED
                                     loadingDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "NO BICYCLE IS PARKED", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "No bicycle detected. Please park your bicycle first.", Toast.LENGTH_LONG).show();
 
                                 }
                                 else if(jsonObject.getString("slot_status").equals("vacant") && jsonObject.getString("user_type").equals("registered")){
@@ -281,8 +285,10 @@ public class ScanActivity extends AppCompatActivity {
 //                                openParkingDetails();
                                 //SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
 
-                            }else{
-                                Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
+                            }
+                            else if(jsonObject.getString("type").equals("Failed")){
+                                loadingDialog.dismiss();
+                                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
                                 flagMatch = false;
                             }
                         } catch (JSONException e) {
@@ -523,6 +529,12 @@ public class ScanActivity extends AppCompatActivity {
         });
 
         alertDialog.create().show();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
 }

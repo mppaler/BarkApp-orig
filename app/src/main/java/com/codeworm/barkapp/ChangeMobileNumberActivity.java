@@ -1,8 +1,11 @@
 package com.codeworm.barkapp;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,17 +30,23 @@ public class ChangeMobileNumberActivity extends AppCompatActivity {
     Button btnNext, btnCancel;
     String sMobileNum;
     ValidationFlag validationFlag = new ValidationFlag();
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_mobile_number);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
         textCurrentMobileNumber = (TextView) findViewById(R.id.textCurrentMobileNumber);
         editNewMobileNumber = (EditText) findViewById(R.id.editNewMobileNumber);
         btnNext = (Button) findViewById(R.id.btnNext);
         btnCancel = (Button) findViewById(R.id.btnCancel);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
         textCurrentMobileNumber.setText(SharedPreferencesManager.getInstance(this).getMobilenum());
 
         btnNext.setOnClickListener(new View.OnClickListener() {
@@ -118,5 +127,10 @@ public class ChangeMobileNumberActivity extends AppCompatActivity {
         RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
 
 }

@@ -4,11 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -43,12 +45,14 @@ public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
     Button btnCancel, btnSubmit, btnResend;
     String sFirstDigit, sSecondDigit, sThirdDigit, sFourthDigit, sUsername, sMobileNum;
     EditText etFirstDigit, etSecondDigit, etThirdDigit, etFouthDigit;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_mobile_number_verification);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnResend = (Button) findViewById(R.id.btnResend);
@@ -59,6 +63,10 @@ public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
 
         sMobileNum = getIntent().getStringExtra("newnumber");
         sUsername = SharedPreferencesManager.getInstance(this).getUsername();
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,9 +76,14 @@ public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
                 sThirdDigit = etThirdDigit.getText().toString();
                 sFourthDigit = etFouthDigit.getText().toString();
 
-                String sCode = sFirstDigit + sSecondDigit + sThirdDigit + sFourthDigit;
-                CheckCodeAsyncTask checkCodeAsyncTask = new CheckCodeAsyncTask();
-                checkCodeAsyncTask.execute(sMobileNum, sCode);
+                if(!validate()){
+                    Toast.makeText(ChangeMobileNumberVerificationActivity.this, "Verification Failed", Toast.LENGTH_SHORT).show();
+                }else{
+                    String sCode = sFirstDigit + sSecondDigit + sThirdDigit + sFourthDigit;
+                    CheckCodeAsyncTask checkCodeAsyncTask = new CheckCodeAsyncTask();
+                    checkCodeAsyncTask.execute(sMobileNum, sCode);
+                }
+
             }
         });
 
@@ -151,6 +164,29 @@ public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean validate(){
+        boolean valid = true;
+
+        if(sFirstDigit.isEmpty()){
+            etFirstDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sSecondDigit.isEmpty()){
+            etSecondDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sThirdDigit.isEmpty()){
+            etThirdDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sFourthDigit.isEmpty()){
+            etFouthDigit.setError("Please enter a number");
+            valid = false;
+        }
+
+        return valid;
     }
 
     public class CheckCodeAsyncTask extends AsyncTask<String,Void,Void> {
@@ -330,5 +366,11 @@ public class ChangeMobileNumberVerificationActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

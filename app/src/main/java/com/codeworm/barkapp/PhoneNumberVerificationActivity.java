@@ -84,12 +84,17 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
                 sThirdDigit = etThirdDigit.getText().toString();
                 sFourthDigit = etFouthDigit.getText().toString();
 
-                String sCode = sFirstDigit + sSecondDigit + sThirdDigit + sFourthDigit;
-                System.out.println("Value of sMobileNum is -> " + sMobileNum);
-                System.out.println("Value of sCode is -> " + sCode);
-                System.out.println("Entering CheckCodeAsyncTask...");
-                CheckCodeAsyncTask checkCodeAsyncTask = new CheckCodeAsyncTask();
-                checkCodeAsyncTask.execute(sMobileNum, sCode);
+                if(validate()){
+                    String sCode = sFirstDigit + sSecondDigit + sThirdDigit + sFourthDigit;
+                    System.out.println("Value of sMobileNum is -> " + sMobileNum);
+                    System.out.println("Value of sCode is -> " + sCode);
+                    System.out.println("Entering CheckCodeAsyncTask...");
+                    CheckCodeAsyncTask checkCodeAsyncTask = new CheckCodeAsyncTask();
+                    checkCodeAsyncTask.execute(sMobileNum, sCode);
+                }else{
+                    Toast.makeText(PhoneNumberVerificationActivity.this, "Verification Failed", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -165,6 +170,29 @@ public class PhoneNumberVerificationActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public boolean validate(){
+        boolean valid = true;
+
+        if(sFirstDigit.isEmpty()){
+            etFirstDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sSecondDigit.isEmpty()){
+            etSecondDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sThirdDigit.isEmpty()){
+            etThirdDigit.setError("Please enter a number");
+            valid = false;
+        }
+        if(sFourthDigit.isEmpty()){
+            etFouthDigit.setError("Please enter a number");
+            valid = false;
+        }
+
+        return valid;
     }
 
     public class CheckCodeAsyncTask extends AsyncTask<String,Void,Void> {

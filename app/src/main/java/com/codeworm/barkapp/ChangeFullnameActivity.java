@@ -2,9 +2,11 @@ package com.codeworm.barkapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,17 +31,23 @@ public class ChangeFullnameActivity extends AppCompatActivity {
     Button btnSubmit, btnCancel;
     String sFullname, sOldFullname;
     LoadingDialog loadingDialog;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_fullname);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
         txtFullname = (TextView) findViewById(R.id.txt_full_name);
         editNewFullname = (EditText) findViewById(R.id.editNewFullname);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         loadingDialog = new LoadingDialog(ChangeFullnameActivity.this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
         txtFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
         sOldFullname = SharedPreferencesManager.getInstance(this).getFullname();
 
@@ -126,5 +134,11 @@ public class ChangeFullnameActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

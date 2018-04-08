@@ -2,9 +2,11 @@ package com.codeworm.barkapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,12 +28,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
     Button btnSubmit, btnCancel;
     EditText editCurrentPassword, editNewPassword, editConfirmNewPassword;
     String sCurrentPassword, sNewPassword, sConfirmNewPassword, sUsername, sMobileNum;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_password);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         editCurrentPassword = (EditText) findViewById(R.id.editCurrentPassword);
@@ -40,7 +44,10 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
         sUsername = SharedPreferencesManager.getInstance(this).getUsername();
         sMobileNum = SharedPreferencesManager.getInstance(this).getMobilenum();
-
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,5 +153,11 @@ public class ChangePasswordActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

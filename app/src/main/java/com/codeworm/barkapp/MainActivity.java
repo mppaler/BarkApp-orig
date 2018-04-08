@@ -153,7 +153,6 @@ public class MainActivity extends AppCompatActivity
 //            startActivity(intent);
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.fragment_container, usermanualFragment, "usermanualFragment").commit();
-            Toast.makeText(this, "User Manual", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -54,6 +54,12 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Parking List");
 
+        if(toolbar == null){
+            System.out.println("I am null");
+        }else{
+            System.out.println("I am not null");
+        }
+
         //for Search View
 
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));

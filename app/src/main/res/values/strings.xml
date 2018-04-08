@@ -19,5 +19,6 @@
     <string name="event">Event</string>
     <string name="area">Parking\n Area</string>
     <string name="slot_id">Slot\n ID</string>
+    <string name="resend_another_code">RESEND ANOTHER CODE</string>
 
 </resources>

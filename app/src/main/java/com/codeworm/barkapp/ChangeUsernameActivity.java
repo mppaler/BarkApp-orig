@@ -3,6 +3,7 @@ package com.codeworm.barkapp;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,17 +32,23 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     Button btnSubmit, btnCancel;
     String sUsername, sOldUsername;
     LoadingDialog loadingDialog;
+    Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_username);
 
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
         txtUsername = (TextView) findViewById(R.id.textUsername);
         editNewUsername = (EditText) findViewById(R.id.editNewUsername);
         btnSubmit = (Button) findViewById(R.id.btnSubmit);
         btnCancel = (Button) findViewById(R.id.btnCancel);
         loadingDialog = new LoadingDialog(ChangeUsernameActivity.this);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
         txtUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
         sOldUsername = SharedPreferencesManager.getInstance(this).getUsername();
 
@@ -176,5 +183,11 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 }

@@ -2,6 +2,8 @@ package com.codeworm.barkapp;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     long nMobileNum;
     ValidationFlag validationFlag = new ValidationFlag();
     private static final String TAG = "MyActivity";
+    LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,27 +76,15 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void register(){
         initialize();
-
         if(!validate()){
+            loadingDialog.dismiss();
             Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
-        }else{
-//            onSignUpSuccess();
-            sMobileNum = validationFlag.formatMobileNumber(sMobileNum);
-            sendCode(); //Application will send a 4-Digit code
-            Intent intent = new Intent(this, PhoneNumberVerificationActivity.class);
-            intent.putExtra("type", "signup");
-            intent.putExtra("sFullname",sFullname);
-            intent.putExtra("sUsername",sUsername);
-            intent.putExtra("sPassword",sPassword);
-            intent.putExtra("sMobileNum",sMobileNum);
-            startActivity(intent);
-            finish();
         }
     }
 
     public boolean validate(){
         boolean valid = true;
-
+        validationFlag.setCheckUsernameFlag(false);
         if(sFullname.isEmpty()){
             etFullname.setError("Please enter valid name");
             valid = false;
@@ -185,18 +176,11 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public boolean validateUsername(String username){
-//        String method = "checkUsername";
-//        new SignUpTask(SignUpActivity.this).execute(method, sUsername);
-//        finish();
-//        System.out.println("PANGIT MO HARVIE");
-//        if(validationFlag.isCheckUsernameFlag()==true){
-//            return true;
-//        }else{
-//            return false;
-//        }
+        loadingDialog = new LoadingDialog(SignUpActivity.this);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
         boolean decision = true;
-        //progressDialog.setMessage("Checking username...");
-        //progressDialog.show();
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CHECK_USERNAME,
                 new Response.Listener<String>() {
                     @Override
@@ -206,6 +190,7 @@ public class SignUpActivity extends AppCompatActivity {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
                             Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
+                            loadingDialog.dismiss();
                             System.out.println("Getting there...");
 
                             if(jsonObject.getString("type").equals("Username already taken")){
@@ -214,6 +199,7 @@ public class SignUpActivity extends AppCompatActivity {
                             }else{
                                 System.out.println("Getting there... LOL");
                                 validationFlag.setCheckUsernameFlag(false);
+                                continueSignUp();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -284,6 +270,20 @@ public class SignUpActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
+    }
+
+    public void continueSignUp(){
+        sMobileNum = validationFlag.formatMobileNumber(sMobileNum);
+        sendCode(); //Application will send a 4-Digit code
+        loadingDialog.dismiss();
+        Intent intent = new Intent(this, PhoneNumberVerificationActivity.class);
+        intent.putExtra("type", "signup");
+        intent.putExtra("sFullname",sFullname);
+        intent.putExtra("sUsername",sUsername);
+        intent.putExtra("sPassword",sPassword);
+        intent.putExtra("sMobileNum",sMobileNum);
+        startActivity(intent);
+        finish();
     }
 
 }

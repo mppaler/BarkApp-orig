@@ -4,15 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_inside_app_bg"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context="com.codeworm.barkapp.ChangeMobileNumberActivity">
 
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:animateLayoutChanges="false"
+        android:background="#002171"
+        android:elevation="6dp"
+        android:gravity="left|start"
+        android:minHeight="56dp"
+        android:textAlignment="viewStart"
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/app_name"
+        app:titleTextColor="@android:color/white" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_inside_app_bg">
 
         <LinearLayout
             android:layout_width="match_parent"

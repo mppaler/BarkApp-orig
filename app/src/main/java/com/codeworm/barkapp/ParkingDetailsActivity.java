@@ -3,8 +3,12 @@ package com.codeworm.barkapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,6 +38,9 @@ public class ParkingDetailsActivity extends AppCompatActivity {
     TextView tvParkingArea, tvSlotId, tvAddress;
     String scannedData;
     Button claimBtn;
+    LoadingDialog loadingDialog;
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +51,12 @@ public class ParkingDetailsActivity extends AppCompatActivity {
         tvSlotId = (TextView) findViewById(R.id.slot_id);
         tvAddress = (TextView) findViewById(R.id.address);
         claimBtn = (Button)findViewById(R.id.scan_claim_btn);
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
         tvSlotId.setText(SharedPreferencesManager.getInstance(this).getSlotId());
         tvParkingArea.setText(SharedPreferencesManager.getInstance(this).getRackLocation());
         tvAddress.setText(SharedPreferencesManager.getInstance(this).getAddress());
@@ -95,6 +107,10 @@ public class ParkingDetailsActivity extends AppCompatActivity {
 
 
     private void updateGeneralLog(final String slot_id, final String username, final String status) {
+        loadingDialog = new LoadingDialog(ParkingDetailsActivity.this);
+        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        loadingDialog.setCancelable(false);
+        loadingDialog.show();
         System.out.println("Inside setParkingStatus" );
         System.out.println("Value of param:slot_id --> " + slot_id);
         System.out.println("Value of param:username --> " + username);
@@ -110,6 +126,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
                             //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
                             System.out.println("Getting there...");
                             if(!jsonObject.getBoolean("error")){
+                                loadingDialog.dismiss();
                                 Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
                                 SharedPreferencesManager.getInstance(getApplicationContext()).removeParkingDetails();
                                 unregisterUser(slot_id, username,status);
@@ -209,6 +226,12 @@ public class ParkingDetailsActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
 }

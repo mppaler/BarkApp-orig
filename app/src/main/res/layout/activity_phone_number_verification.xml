@@ -171,7 +171,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:background="@drawable/next_button_bg"
-                android:text="RESEND CODE" />
+                android:text="@string/resend_another_code" />
 
         </LinearLayout>
     </ScrollView>

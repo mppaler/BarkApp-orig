@@ -7,7 +7,7 @@ package com.codeworm.barkapp;
 public class Constants {
 //    private static final String ROOT_URL = "http://192.168.0.10/Marcelino-ws-php/BarkApp%20PHP%20Script/";
 //    private static final String ROOT_URL = "http://192.168.43.170/Marcelino-ws-php/BarkApp%20PHP%20Script/";
-    private static final String ROOT_URL = "https://barkapp.000webhostapp.com/BarkApp%20PHP%20Script/";
+    private static final String ROOT_URL = "https://barkapp.000webhostapp.com/BarkAppPHPScript/";
 
     public static final String URL_LOGIN = ROOT_URL+"loginUser.php";
     public static final String URL_REGISTER = ROOT_URL+"createUser.php";

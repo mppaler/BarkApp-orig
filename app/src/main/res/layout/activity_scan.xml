@@ -1,58 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_inside_app_bg"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.codeworm.barkapp.ScanActivity">
 
-    <TextView
-        android:id="@+id/qrcode_title"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/appToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="10dp"
-        android:text="QR Code Scanner"
-        android:textAlignment="center"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/cast_libraries_material_featurehighlight_text_header_color"
-        android:textSize="25dp"
-        android:textStyle="bold" />
+        android:animateLayoutChanges="false"
+        android:background="#002171"
+        android:elevation="6dp"
+        android:gravity="left|start"
+        android:minHeight="56dp"
+        android:textAlignment="viewStart"
+        android:theme="?attr/actionBarTheme"
+        app:title="@string/app_name"
+        app:titleTextColor="@android:color/white" />
 
-    <TextView
-        android:id="@+id/qrcode_desc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Scan the QR code \nto register your bike \nin the slot!"
-        android:textColor="#FFF"
-        android:textSize="20dp"
-        android:layout_below="@+id/qrcode_title"
-        android:layout_centerHorizontal="true" />
-    <ImageView
+    <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/scan_image"
-        android:layout_below="@id/qrcode_desc"
-        android:layout_above="@+id/scan_btn2"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/appToolbar"
+        android:background="@drawable/gradient_inside_app_bg">
 
-    <Button
-        android:id="@+id/scan_btn2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/scan_now_button_bg"
-        android:drawableLeft="@drawable/icon_qr"
-        android:gravity="left|center_vertical"
-        android:text="SCAN QR CODE NOW"
-        android:paddingRight="5dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"/>
-        <!--android:layout_width="match_parent"-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/qrcode_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="false"
+                android:layout_below="@+id/appToolbar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="30dp"
+                android:layout_marginTop="10dp"
+                android:text="QR Code Scanner"
+                android:textAlignment="center"
+                android:textColor="@color/cast_libraries_material_featurehighlight_text_header_color"
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/qrcode_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/qrcode_title"
+                android:layout_centerHorizontal="true"
+                android:text="Scan the QR code \n to register your bike \nin the slot!"
+                android:textAlignment="center"
+                android:textColor="#FFF"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="229dp"
+                android:layout_height="378dp"
+                android:layout_above="@+id/scan_btn2"
+                android:layout_below="@id/qrcode_desc"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/scan_image"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/scan_btn2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/scan_now_button_bg"
+                android:drawableLeft="@drawable/icon_qr"
+                android:gravity="left|center_vertical"
+                android:paddingRight="5dp"
+                android:text="SCAN QR CODE NOW"
+                android:textAlignment="center" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
         <!--android:text="SCAN NOW"-->
         <!--android:layout_alignParentBottom="true"-->
