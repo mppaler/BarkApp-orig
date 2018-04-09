@@ -1,13 +1,10 @@
 package com.codeworm.barkapp;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,16 +12,9 @@ import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -37,9 +27,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText etFullname, etUsername, etPassword, etConPassword, etMobileNum;
     Button btnSubmit;
     String sFullname, sUsername, sPassword, sConPassword, sMobileNum;
-    long nMobileNum;
     ValidationFlag validationFlag = new ValidationFlag();
-    private static final String TAG = "MyActivity";
     LoadingDialog loadingDialog;
 
     @Override
@@ -126,55 +114,6 @@ public class SignUpActivity extends AppCompatActivity {
         return valid;
     }
 
-    public void onSignUpSuccess(){
-        //progressDialog.setMessage("Registering user...");
-        //progressDialog.show();
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_REGISTER,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        //progressDialog.dismiss();
-                        try {
-                            System.out.println(response);
-                            JSONObject jsonObject = new JSONObject(response);
-                            Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
-                            //sUsername = sUsername + "@barkapp.com";
-                            System.out.println("Value of sUsername in signUp is --->" + sUsername);
-                            System.out.println("Value of sPassword in signUp is --->" + sPassword);
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
-                        Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                Map<String,String> params = new HashMap<>();
-                params.put("fullname", sFullname);
-                params.put("username", sUsername);
-                params.put("password", sPassword);
-                params.put("mobilenum", sMobileNum);
-                return params;
-            }
-        };
-
-        RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
     public boolean validateUsername(String username){
         loadingDialog = new LoadingDialog(SignUpActivity.this);
         loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -194,10 +133,8 @@ public class SignUpActivity extends AppCompatActivity {
                             System.out.println("Getting there...");
 
                             if(jsonObject.getString("type").equals("Username already taken")){
-                                System.out.println("Getting there...YAS");
                                 validationFlag.setCheckUsernameFlag(true);
                             }else{
-                                System.out.println("Getting there... LOL");
                                 validationFlag.setCheckUsernameFlag(false);
                                 continueSignUp();
                             }
@@ -210,7 +147,6 @@ public class SignUpActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }){
@@ -223,8 +159,6 @@ public class SignUpActivity extends AppCompatActivity {
         };
 
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
 
         decision = validationFlag.isCheckUsernameFlag();
         return decision;
@@ -236,12 +170,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void sendCode(){
-        System.out.println("Value of sMobileNum is --> " + sMobileNum);
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_SEND_CODE,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
@@ -257,7 +189,6 @@ public class SignUpActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
                         Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }){

@@ -1,20 +1,17 @@
 package com.codeworm.barkapp;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
-import android.os.AsyncTask;
+
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.Patterns;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -28,30 +25,19 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
 import com.google.firebase.database.ValueEventListener;
-import com.google.zxing.client.android.Intents;
+
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import javax.net.ssl.HttpsURLConnection;
 
 public class ScanActivity extends AppCompatActivity {
 
@@ -97,92 +83,14 @@ public class ScanActivity extends AppCompatActivity {
 
         if(result!=null) {
             scannedData = result.getContents();
-            System.out.println("Value of scannedData is ----->" + scannedData);
 
             if(scannedData != null){
                 validateQR(scannedData);
-                validateQR_FB(scannedData);
             }
 
         }
 
     }
-
-    private void validateQR_FB(final String input) {
-        SharedPreferencesManager.getInstance(getApplicationContext()).setCode(scannedData);
-
-//        final String user=SharedPreferencesManager.getInstance(getApplicationContext()).getUsername();
-//        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-//
-//        DatabaseReference ref = mDatabase.child("Racks").child("001").child("001");
-//        DatabaseReference query = FirebaseDatabase.getInstance().getReference().child("Racks");
-//
-//        query.child("001").orderByChild("User").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-//                    System.out.println("PLEASE " + childSnapshot.getKey() + childSnapshot.child("qrCode").getValue());
-//
-//                        String qr = childSnapshot.child("qrCode").getValue(String.class);
-//                        String User = childSnapshot.child("User").getValue(String.class);
-//                        String key = childSnapshot.getKey();
-//
-//
-////                     list_qr.add(qr);
-////                    Iterator<String> itr = list_qr.iterator();
-////                     while(itr.hasNext()){
-////                         String element = itr.next();
-////                         System.out.println("POTAS "+ element);
-////                     }
-//                    System.out.println("KINGINA MO! "+ input);
-//                    if (qr.equals(input) && User.isEmpty()) {
-//                        String code = input;
-//
-//                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
-//
-//                        HashMap<String, Object> result_final = new HashMap<>();
-//                        result_final.put(childSnapshot.getKey(), user);
-//                        String refKey = childSnapshot.getKey();
-//                        System.out.println("POTAS2 " + refKey);
-//                        System.out.println("POKE " + childSnapshot.getKey() + childSnapshot.child("User").getValue() + childSnapshot.child("qrCode").getValue() + input);
-//                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
-//                        validateQR(input);
-//                        System.out.println("ETO NA BOI" + result_final);
-//                        Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
-//
-//
-//                    }
-//
-//                    else {
-//                        //
-//                    }
-//
-//
-//
-//                }
-//
-//                System.out.println("PLS" + dataSnapshot.getValue());
-////                 System.out.println("POTA KA" + scannedData + qr);
-////                     if(qr.equals(scannedData) && User.isEmpty()) {
-////                         mDatabase.child("Racks").child("001").child("001").child("User").setValue(user);
-////                         Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
-////                         System.out.println("POTA KA" + scannedData + qr);
-////                     } else {
-////                         Toast.makeText(ScanActivity.this, "FIREBASE DENIED", Toast.LENGTH_SHORT).show();
-////                     }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-    }
-
-
-
-
 
     public void validateQR(final String inputData) {
         loadingDialog = new LoadingDialog(ScanActivity.this);
@@ -193,22 +101,13 @@ public class ScanActivity extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
 
                             if(jsonObject.getString("type").equals("Success")){
-
-
-                                System.out.println("NAKAPASOK AKO");
                                 flagMatch = true;
                                 validateStatus(jsonObject.getString("slot_id").toString());
-//                                setParkingDetails();
-//                                finish();
-//                                openParkingDetails();
-                                //SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
 
                             }else{
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
@@ -223,8 +122,6 @@ public class ScanActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
-                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
@@ -249,11 +146,8 @@ public class ScanActivity extends AppCompatActivity {
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
 
                             if(jsonObject.getString("type").equals("Success")){
-
-                                System.out.println("NAKAPASOK AKO");
 
                                 if(jsonObject.getString("slot_status").equals("vacant") && jsonObject.getString("user_type").equals("unregistered")){
                                     //ONLY OCCUPIED IS ALLOWED
@@ -280,11 +174,6 @@ public class ScanActivity extends AppCompatActivity {
                                     loadingDialog.dismiss();
                                     Toast.makeText(getApplicationContext(), "THIS SLOT IS ALREADY TAKEN", Toast.LENGTH_LONG).show();
                                 }
-//                                setParkingDetails();
-//                                finish();
-//                                openParkingDetails();
-                                //SharedPreferencesManager.getInstance(getApplicationContext()).loginUser(jsonObject.getString("fullname"), jsonObject.getString("username"), jsonObject.getString("mobilenum"), jsonObject.getInt("id"));
-
                             }
                             else if(jsonObject.getString("type").equals("Failed")){
                                 loadingDialog.dismiss();
@@ -300,14 +189,11 @@ public class ScanActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
-                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }){
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<>();
-                System.out.println("Value of slotID is ---> " + slot_id);
                 params.put("slot_id", slot_id);
                 return params;
             }
@@ -329,7 +215,6 @@ public class ScanActivity extends AppCompatActivity {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
                     final String refKey = ds.getKey();
-                    System.out.println("KEYS " + refKey);
 
                     DatabaseReference query2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
                     query2.child(refKey).orderByKey().limitToFirst(4).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -342,45 +227,31 @@ public class ScanActivity extends AppCompatActivity {
 
 
                                 if (key.equals(slot_id) && User.isEmpty()) {
-                                    System.out.println("GUMANA NA AMP " + key + slot_id);
-
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
 
                                     HashMap<String, Object> result_user = new HashMap<>();
-                                    //result_final.put(childSnapshot.getKey(), user);
                                     result_user.put("user", user);
 
 
                                     String childKey = childSnapshot.getKey();
-                                    System.out.println("POTAS2 " + childKey);
                                     dbref.child("locs").child(refKey).child(childKey).updateChildren(result_user);
-
-                                    System.out.println("KEYS2 "+ refKey + childKey);
-
-
-//                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
-                                    System.out.println("ETO NA BOI" + result_user);
-                                    Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
 
                                 } else if (key.equals(slot_id) && User.equals("unregistered")) {
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
 
                                     HashMap<String, Object> result_final = new HashMap<>();
-//                        result_final.put(childSnapshot.getKey(), user);
+
                                     result_final.put("user", user);
                                     String childKey = childSnapshot.getKey();
-                                    System.out.println("POTAS2 " + childKey);
                                     dbref.child(childKey).updateChildren(result_final);
-//                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
-                                    System.out.println("ETO NA BOI" + result_final);
-                                    Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
+
+
                                 } else {
-                                    //
+
                                 }
 
                             }
                         }
-
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
@@ -402,25 +273,20 @@ public class ScanActivity extends AppCompatActivity {
 
 
     private void setParkingDetails() {
-        System.out.println("Inside setParkingDetails");
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_PARKING_DETAILS,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
-                            System.out.println("Getting there...");
                             if(!jsonObject.getBoolean("error")){
                                 SharedPreferencesManager.getInstance(getApplicationContext()).setParkingDetails(jsonObject.getString("slot_id"), jsonObject.getString("rack_location"), jsonObject.getString("address"));
                                 System.out.println("Value of slot ID that will be transfered in shared preference: " + jsonObject.getString("slot_id"));
 
 
                             }else{
-                                System.out.println("Napunta sa else");
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
 
                             }
@@ -433,8 +299,7 @@ public class ScanActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
-                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 }){
             @Override
@@ -444,34 +309,28 @@ public class ScanActivity extends AppCompatActivity {
                 return params;
             }
         };
-        System.out.println("The decision of momshie");
+
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-//
-//        decision = validationFlag.isCheckUser();
-//        System.out.print("The decision of momshie is " + decision);
 
     }
 
     private void updateGeneralLog(final String slot_id, final String username, final String status) {
-        System.out.println("Inside setParkingStatus");
+
 
         StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_UPDATE_GENERAL_LOG,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //progressDialog.dismiss();
+
                         try {
                             System.out.println(response);
                             JSONObject jsonObject = new JSONObject(response);
-                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
-                            System.out.println("Getting there...");
+
                             if(!jsonObject.getBoolean("error")){
                                 Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
 
                             }else{
-                                System.out.println("Napunta sa else");
+
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
 
                             }
@@ -484,8 +343,7 @@ public class ScanActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        //progressDialog.hide();
-                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+
                     }
                 }){
             @Override
@@ -497,13 +355,7 @@ public class ScanActivity extends AppCompatActivity {
                 return params;
             }
         };
-        System.out.println("The decision of momshie");
         RequestHandler.getInstance(this).addToRequestQueue(stringRequest);
-//        RequestQueue requestQueue = Volley.newRequestQueue(this);
-//        requestQueue.add(stringRequest);
-//
-//        decision = validationFlag.isCheckUser();
-//        System.out.print("The decision of momshie is " + decision);
 
     }
 
