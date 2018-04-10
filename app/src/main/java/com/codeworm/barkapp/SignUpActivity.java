@@ -65,7 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
     public void register(){
         initialize();
         if(!validate()){
-            loadingDialog.dismiss();
+            //loadingDialog.dismiss();
             Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
         }
     }

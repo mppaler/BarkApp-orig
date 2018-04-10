@@ -127,7 +127,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
                             System.out.println("Getting there...");
                             if(!jsonObject.getBoolean("error")){
                                 loadingDialog.dismiss();
-                                Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
                                 SharedPreferencesManager.getInstance(getApplicationContext()).removeParkingDetails();
                                 unregisterUser(slot_id, username,status);
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));

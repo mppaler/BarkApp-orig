@@ -73,6 +73,7 @@ public class SplashActivity extends AppCompatActivity {
             AlertDialog.Builder builder =new AlertDialog.Builder(SplashActivity.this);
             builder.setTitle("No internet Connection");
             builder.setMessage("Please turn on internet connection to continue");
+            builder.setCancelable(false);
             builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {

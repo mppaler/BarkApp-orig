@@ -1,6 +1,9 @@
 package com.codeworm.barkapp;
 
+import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.fragment_container, homeFragment, homeFragment.getTag()).commit();
 
@@ -86,11 +91,16 @@ public class MainActivity extends AppCompatActivity
         tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
         tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
 
+        //CHECK DATABASE IF USER HAS ALREADY SCANNED DATA
+        checkUserStatus();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        //CHECK DATABASE IF USER HAS ALREADY SCANNED DATA
+        checkUserStatus();
         tvFullname.setText(SharedPreferencesManager.getInstance(this).getFullname());
         tvUsername.setText(SharedPreferencesManager.getInstance(this).getUsername());
     }
@@ -219,17 +229,22 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(aVoid);
             loadingDialog.dismiss();
 
-            System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+            android.support.v4.app.Fragment fragment = getSupportFragmentManager().findFragmentByTag("Parking Log");
 
+            System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+            int numHolder = parkingLogFactory.getParkingLogList().size();
             if(mParkingLog.size() != (parkingLogFactory.getParkingLogList()).size()){
                 parkingLogFactory.clearParkingLogList();        //CLEAR DATA FROM PARKING LOG LIST
                 System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
                 parkingLogFactory.setParkingLogList(mParkingLog);       //ADD THE NEW SET OF DATA IN PARKING LOG
                 System.out.println("Size of parkingLogList --> " + (parkingLogFactory.getParkingLogList()).size());
+                if(numHolder != 0 && parkingLogFactory.getParkingLogList().size() != 0 && fragment != null && fragment.isVisible()){
+                    restartApplication();
+                }
             }
 
             FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragment_container, parkingLogFragment, parkingLogFragment.getTag()).commit();
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, parkingLogFragment, "Parking Log").commit();
         }
 
         @Override
@@ -281,6 +296,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+
+
     public String convertInputStreamToString(InputStream entityResponse) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte[] buffer = new byte[1024];
@@ -292,4 +309,124 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void checkUserStatus(){
+//        loadingDialog = new LoadingDialog(LoginActivity.this);
+//        loadingDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//        loadingDialog.setCancelable(false);
+//        loadingDialog.show();
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_CHECK_USER_STATUS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            System.out.println(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
+
+                            if(jsonObject.getString("message").equals("Success") && SharedPreferencesManager.getInstance(MainActivity.this).getSlotId() == null &&
+                                    SharedPreferencesManager.getInstance(MainActivity.this).getRackLocation() == null &&
+                                    SharedPreferencesManager.getInstance(MainActivity.this).getAddress() == null){  //User was found to be registered in a rack
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setCode(jsonObject.getString("qr_data"));
+                                setParkingDetails(jsonObject.getString("qr_data"));
+                                restartApplication();
+
+                            }else if(jsonObject.getString("message").equals("Not registered") && SharedPreferencesManager.getInstance(MainActivity.this).getSlotId() != null &&
+                                    SharedPreferencesManager.getInstance(MainActivity.this).getRackLocation() != null &&
+                                    SharedPreferencesManager.getInstance(MainActivity.this).getAddress() != null){
+                                SharedPreferencesManager.getInstance(MainActivity.this).removeParkingDetails();
+                                restartApplication();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //progressDialog.hide();
+                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("username", SharedPreferencesManager.getInstance(getApplicationContext()).getUsername());
+                return params;
+            }
+        };
+
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+    }
+
+    private void setParkingDetails(final String qr_data) {
+        System.out.println("Inside setParkingDetails");
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, Constants.URL_PARKING_DETAILS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //progressDialog.dismiss();
+                        try {
+                            System.out.println(response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            //Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_SHORT).show();
+                            System.out.println("Getting there...");
+                            if(!jsonObject.getBoolean("error")){
+                                SharedPreferencesManager.getInstance(getApplicationContext()).setParkingDetails(jsonObject.getString("slot_id"), jsonObject.getString("rack_location"), jsonObject.getString("address"));
+                                System.out.println("Value of slot ID that will be transfered in shared preference: " + jsonObject.getString("slot_id"));
+                                restartApplication();
+
+
+                            }else{
+                                System.out.println("Napunta sa else");
+                                Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
+//                                loadingDialog.dismiss();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //progressDialog.hide();
+                        // Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("code", qr_data);
+                return params;
+            }
+        };
+        System.out.println("The decision of momshie");
+        RequestHandler.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
+
+    }
+
+    public void restartApplication(){
+        AlertDialog.Builder builder =new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Application Need to Restart");
+        builder.setMessage("Your account's record and our system did not match. The application need to restart.");
+        builder.setCancelable(false);
+        builder.setNegativeButton("close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                Intent i = getBaseContext().getPackageManager()
+                        .getLaunchIntentForPackage( getBaseContext().getPackageName() );
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 }
