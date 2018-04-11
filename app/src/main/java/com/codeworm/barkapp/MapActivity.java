@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -27,6 +28,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -192,98 +194,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             init();
         }
 
-//             mAdapter = new FirebaseListAdapter<LocationModel>(this, LocationModel.class, R.layout.view_item, databaseReference ) {
-//            @Override
-//            protected void populateView(View v, LocationModel data, int position) {
-//                // Bind the Chat to the view
-//                // ...
-//
-//                String name = data.getName();
-//                int ratio = data.getRatio();
-//
-//                TextView text1 = (TextView) v.findViewById(R.id.text_name);
-//                TextView text2  = (TextView)  v.findViewById(R.id.text_ratio);
-//                text1.setText(data.getName());
-//                text2.setText(String.valueOf(data.getRatio()));
-//                System.out.println("PLS "+data.getName());
-//                System.out.println("PLS2 "+data.getRatio());
-//                System.out.println("PLS "+name);
-//                System.out.println("PLS2 "+ratio);
-//            }
-//        };
-//
-//
-//        mTotalList.setAdapter(mAdapter);
-//        FirebaseListOptions<LocationModel> options = new FirebaseListOptions.Builder<LocationModel>()
-//                .setQuery(query, LocationModel.class)
-//                .build();
-
-//        FirebaseListAdapter<LocationModel>firebaseListAdapter = new FirebaseListAdapter<LocationModel>(
-//                this,
-//                LocationModel.class,
-//                android.R.layout.simple_list_item_2,
-//                databaseReference
-//        ){
-//
-//            @Override
-//            protected void populateView(View v, LocationModel model,  int position) {
-//
-//                TextView textView = (TextView) v.findViewById(android.R.id.text1);
-//                TextView textView2 = (TextView) v.findViewById(android.R.id.text2);
-//                System.out.println("GANA NA PLS" + model.getName());
-//
-//                textView.setText(model.getName());
-//                textView.setText(model.getAge());
-//
-//
-////                ((TextView)v.findViewById(android.R.id.text1)).setText((model.getLocName()));
-//
-//
-//
-//            }
-//        };
-//
-//
-//        mTotalList.setAdapter(firebaseListAdapter);
-
-
-
-
-
-
-//        mAdapter = new FirebaseListAdapter<LocationModel>(this, LocationModel.class, android.R.layout.simple_list_item_1, databaseReference ) {
-//            @Override
-//            protected void populateView(View v, LocationModel data, int position) {
-//                // Bind the Chat to the view
-//                // ...
-//                ((TextView)v.findViewById(android.R.id.text1)).setText((data.getName()));
-//            }
-//        };
-//
-//
-//        mTotalList.setAdapter(mAdapter);
-//        FirebaseListOptions<LocationModel> options = new FirebaseListOptions.Builder<LocationModel>()
-//                .setQuery(databaseReference, LocationModel.class).setLayout(android.R.layout.simple_list_item_2).build();
-//
-//        FirebaseListAdapter<LocationModel> adapter = new FirebaseListAdapter<LocationModel>(options) {
-//            @Override
-//            protected void populateView(View v, LocationModel model, int position) {
-//                // Get references to the views of message.xml
-//                TextView messageText = v.findViewById(R.id.text1);
-//                TextView messageUser = v.findViewById(R.id.text2);
-//
-//
-//                // Set their text
-//                messageText.setText(model.getName());
-//                messageUser.setText(model.getAge());
-//
-//                // Format the date before showing it
-//
-//            }
-//        };
-//        mTotalList.setAdapter(adapter);
-
-
     }
 
 
@@ -317,7 +227,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MarkerOptions options = new MarkerOptions();
     private ArrayList<Double> coordinates = new ArrayList<Double>();
     private ArrayList<LatLng> coor = new ArrayList<LatLng>();
-
+    Toolbar toolbar;
 
 
     private DatabaseReference mDatabase;
@@ -336,7 +246,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         //SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
         //       .findFragmentById(R.id.map);
         // mapFragment.getMapAsync(this);
+        toolbar = (Toolbar) findViewById(R.id.appToolbar);
 
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light), PorterDuff.Mode.SRC_ATOP);
         mGps = (ImageView) findViewById(R.id.ic_gps);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -465,6 +380,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
     }
 
 

@@ -1,6 +1,7 @@
 package com.codeworm.barkapp;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -45,6 +46,7 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
     EditText nameEditTxt, propTxt, descTxt;
     SearchView searchView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +55,7 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Parking List");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if(toolbar == null){
             System.out.println("I am null");
@@ -63,8 +66,10 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
         //for Search View
 
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.background_light),
+                PorterDuff.Mode.SRC_ATOP);
 
-        searchView = (SearchView) findViewById(R.id.search_view);
+                searchView = (SearchView) findViewById(R.id.search_view);
         searchView.setOnQueryTextListener(this);
         searchView.setIconifiedByDefault(false);
         searchView.setSubmitButtonEnabled(true);
@@ -87,46 +92,6 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
 
 
 
-//        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-//            @Override
-//            public void onSearchViewShown() {
-//
-//            }
-//
-//            @Override
-//            public void onSearchViewClosed() {
-//                lv = findViewById(R.id.lv);
-//                adapter = new ParkingListAdapter(ParkingListActivity.this, helper.retrieve());
-//                lv.setAdapter(adapter);
-//
-//            }
-//        });
-//
-//        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                if(newText != null && !newText.isEmpty()){
-//                    List<String> lstFound = new ArrayList<String>();
-//                    for(LocationModel item: locationModels){
-//                        if (item.contains(newText))
-//                            lstFound.add(String.valueOf(item));
-//                        }
-//                        adapter = new ParkingListAdapter(ParkingListActivity.this, helper.retrieve());
-//                        lv.setAdapter(adapter);
-//                    }
-//                    else{
-//                    adapter = new ParkingListAdapter(ParkingListActivity.this, helper.retrieve());
-//                    lv.setAdapter(adapter);
-//                }
-//                return true;
-//                }
-//
-//        });
         db.child("locs").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -158,29 +123,6 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
         });
 
 
-//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//        DatabaseReference businessRef = rootRef.child("locs");
-//
-//        ValueEventListener eventListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-//                    String name = ds.child("name").getValue(String.class);
-//                    Long ratio = ds.child("ratio").getValue(Long.class);
-//                    Long total_slot = ds.child("total_slot").getValue(Long.class);
-//                    Log.d("POTA", name + " / " + ratio + " / " + total_slot + " / ");
-//                }
-//
-//            }
-//
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        };
-//        businessRef.addListenerForSingleValueEvent(eventListener);
-
     }
 
 
@@ -202,6 +144,11 @@ public class ParkingListActivity extends AppCompatActivity implements SearchView
             filter.filter(newText);
 
         }
+        return true;
+    }
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
         return true;
     }
 }

@@ -68,7 +68,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 IntentIntegrator integrator = new IntentIntegrator(activity);
                 integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES);
-                integrator.setPrompt("Scan");
+                integrator.setPrompt("");
                 integrator.setBeepEnabled(false);
                 integrator.setCameraId(0);
                 integrator.setBarcodeImageEnabled(false);
@@ -169,60 +169,65 @@ public class ParkingDetailsActivity extends AppCompatActivity {
         final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
+
+
         DatabaseReference query = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
 
-        query.child("Location").orderByChild("User").addListenerForSingleValueEvent(new ValueEventListener() {
+        query.orderByKey().limitToFirst(2).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    System.out.println("PLEASE " + childSnapshot.getKey() + childSnapshot.child("qrCode").getValue());
+                    final String refKey = ds.getKey();
+                    System.out.println("KEYS " + refKey);
 
-                    String qr = childSnapshot.child("qrCode").getValue(String.class);
-                    String User = childSnapshot.child("User").getValue(String.class);
-                    String key = childSnapshot.getKey();
+                    DatabaseReference query2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
+                    query2.child(refKey).orderByKey().limitToFirst(4).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
 
-
-                    if (key.equals(slot_id) && User.equals(user)) {
-                        System.out.println("GUMANA NA AMP "+ key + slot_id);
-
-                        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
-
-                        HashMap<String, Object> result_final = new HashMap<>();
-//                        result_final.put(childSnapshot.getKey(), user);
-                        result_final.put("User", "");
-                        String refKey = childSnapshot.getKey();
-                        System.out.println("POTAS2 " + refKey);
-                        dbref.child("locs").child("Location").child(refKey).updateChildren(result_final);
-//                        dbref.child("Racks").child("001").child(refKey).child("User").setValue("");
-                        System.out.println("ETO NA BOI" + result_final);
+                                String User = childSnapshot.child("user").getValue(String.class);
+                                String key = childSnapshot.getKey();
 
 
+                                if (key.equals(slot_id) && User.equals(user)) {
+                                    System.out.println("GUMANA NA AMP " + key + slot_id);
+
+                                    DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
+
+                                    HashMap<String, Object> result_user = new HashMap<>();
+                                    //result_final.put(childSnapshot.getKey(), user);
+                                    result_user.put("user", "");
 
 
-                    }
+                                    String childKey = childSnapshot.getKey();
+                                    dbref.child("locs").child(refKey).child(childKey).updateChildren(result_user);
 
-                    else {
-                        //
-                    }
-
+                                    System.out.println("KEYS2 " + refKey + childKey);
 
 
+//                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
+
+                                    Toast.makeText(ParkingDetailsActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    //
+                                }
+
+                            }
+                        }
+
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
                 }
-
-                System.out.println("PLS" + dataSnapshot.getValue());
-//                 System.out.println("POTA KA" + scannedData + qr);
-//                     if(qr.equals(scannedData) && User.isEmpty()) {
-//                         mDatabase.child("Racks").child("001").child("001").child("User").setValue(user);
-//                         Toast.makeText(ScanActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
-//                         System.out.println("POTA KA" + scannedData + qr);
-//                     } else {
-//                         Toast.makeText(ScanActivity.this, "FIREBASE DENIED", Toast.LENGTH_SHORT).show();
-//                     }
             }
-
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError){
 
             }
         });
