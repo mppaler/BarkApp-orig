@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_inside_app_bg"
     tools:context="com.codeworm.barkapp.ParkingDetailsActivity">
 
 
@@ -25,7 +24,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/appToolbar">
+        android:layout_below="@+id/appToolbar"
+        android:background="@drawable/gradient_inside_app_bg">
 
         <LinearLayout
             android:layout_width="match_parent"

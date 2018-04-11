@@ -1,5 +1,7 @@
 package com.codeworm.barkapp;
 
+import android.app.Application;
+
 /**
  * Created by Harvie Marcelino on 01/08/2018.
  */
@@ -77,4 +79,6 @@ public class ValidationFlag {
 
         return formattedNumber;
     }
+
+
 }

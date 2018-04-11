@@ -172,7 +172,7 @@ public class ScanActivity extends AppCompatActivity {
                                 else if(jsonObject.getString("slot_status").equals("occupied") && jsonObject.getString("user_type").equals("registered")){
                                     //SLOT IS ALREADY TAKEN
                                     loadingDialog.dismiss();
-                                    Toast.makeText(getApplicationContext(), "THIS SLOT IS ALREADY TAKEN", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getApplicationContext(), "This slot is already been taken.", Toast.LENGTH_LONG).show();
                                 }
                             }
                             else if(jsonObject.getString("type").equals("Failed")){
@@ -327,7 +327,7 @@ public class ScanActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(response);
 
                             if(!jsonObject.getBoolean("error")){
-                                Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getApplicationContext(), "Updated USER_TYPE and USERNAME", Toast.LENGTH_LONG).show();
 
                             }else{
 
