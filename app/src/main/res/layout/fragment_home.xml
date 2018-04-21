@@ -40,19 +40,19 @@
                 android:id="@+id/textView37"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/wallet_highlighted_text_holo_light"
+                android:background="?android:attr/statusBarColor"
                 android:elevation="0dp"
                 android:paddingBottom="10dp"
                 android:paddingTop="10dp"
                 android:text="PARK YOUR BICYCLE"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/wallet_highlighted_text_holo_light"
+                android:layout_height="wrap_content"
+                android:background="#64b5f6"
                 android:orientation="horizontal"
                 android:paddingBottom="30dp"
                 android:paddingTop="10dp">
@@ -65,9 +65,9 @@
 
                     <ImageView
                         android:id="@+id/homepage_element1"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="110dp"
-                        app:srcCompat="@mipmap/homepage_element2" />
+                        app:srcCompat="@drawable/homepage_element_05" />
 
                     <TextView
                         android:id="@+id/homepage_element_title1"
@@ -87,9 +87,9 @@
 
                     <ImageView
                         android:id="@+id/homepage_element2"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="110dp"
-                        app:srcCompat="@mipmap/homepage_element1" />
+                        app:srcCompat="@drawable/homepage_element_04" />
 
                     <TextView
                         android:id="@+id/homepage_element_title2"
@@ -111,7 +111,7 @@
                         android:id="@+id/homepage_element3"
                         android:layout_width="match_parent"
                         android:layout_height="110dp"
-                        app:srcCompat="@mipmap/homepage_element3" />
+                        app:srcCompat="@drawable/homepage_element_06" />
 
                     <TextView
                         android:id="@+id/homepage_element_title3"

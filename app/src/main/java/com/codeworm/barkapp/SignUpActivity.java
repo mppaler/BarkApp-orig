@@ -64,8 +64,13 @@ public class SignUpActivity extends AppCompatActivity {
 
     public void register(){
         initialize();
-        if(!validate()){
+        if(validate()){
             //loadingDialog.dismiss();
+            if(validateUsername(sUsername)){
+                etUsername.setError("This username is already been taken");
+                Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
+            }
+        }else{
             Toast.makeText(this, "Registration Failed", Toast.LENGTH_SHORT).show();
         }
     }
@@ -77,11 +82,9 @@ public class SignUpActivity extends AppCompatActivity {
             etFullname.setError("Please enter valid name");
             valid = false;
         }
-        if(sUsername.isEmpty() || validateUsername(sUsername)){
+        if(sUsername.isEmpty()){
             if(sUsername.isEmpty()){
                 etUsername.setError("Please enter a username");
-            }else{
-                etUsername.setError("This username is already been taken");
             }
 
             valid = false;
@@ -134,6 +137,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             if(jsonObject.getString("type").equals("Username already taken")){
                                 validationFlag.setCheckUsernameFlag(true);
+                                etUsername.setError("This username is already been taken");
                             }else{
                                 validationFlag.setCheckUsernameFlag(false);
                                 continueSignUp();
@@ -214,7 +218,7 @@ public class SignUpActivity extends AppCompatActivity {
         intent.putExtra("sPassword",sPassword);
         intent.putExtra("sMobileNum",sMobileNum);
         startActivity(intent);
-        finish();
+
     }
 
 }
