@@ -61,6 +61,7 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -259,67 +260,36 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         getLocationPermission();
 
-//  LV
-//        databaseReference2.child("locs").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot ds : dataSnapshot.getChildren()) {
-//
-//                    Double lat = ds.child("lat").getValue(Double.class);
-//                    Double lng = ds.child("lng").getValue(Double.class);
-//
-//                    LatLng newLocation2 = new LatLng(lat, lng);
-//                    String key = dataSnapshot.getKey();
-//
-//
-//
-//                    MarkerOptions a = new MarkerOptions()
-//                            .position(newLocation2)
-//                            .title(key);
-//
-//
-//
-//                    Marker myMarker = mMap.addMarker(a);
-//
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//
+
         databaseReference2.child("locs").addChildEventListener(new ChildEventListener() {
 
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String x = dataSnapshot.child("lat").getValue(String.class);
+                String y = dataSnapshot.child("lng").getValue(String.class);
+                Double latX = Double.valueOf(x);
+                Double latY = Double.valueOf(y);
 
-
-                LatLng newLocation = new LatLng(
-                        dataSnapshot.child("lat").getValue(Double.class),
-                        dataSnapshot.child("lng").getValue(Double.class)
-                );
+                LatLng newLocation = new LatLng(latX, latY);
 
 //                LocationModel name = dataSnapshot.child("name").getValue(LocationModel.class);
 //                LocationModel ratio = dataSnapshot.child("ratio").getValue(LocationModel.class);
                 String name = dataSnapshot.child("name").getValue(String.class);
                 Integer ratio = dataSnapshot.child("ratio").getValue(Integer.class);
-//                System.out.println("OGAG"+newLocation);
+
 
                 String key = dataSnapshot.getKey();
 
                 mLocName.add(name);
                 mTotals.add(ratio);
                 mKeys.add(key);
-                System.out.println("PUTA PLS " + ratio);
+
 
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation)
-                        .title(name).icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
-                System.out.println("OY" + ratio +key);
+                        .title(name)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
+
 
 
 
@@ -328,12 +298,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                String x = dataSnapshot.child("lat").getValue(String.class);
+                String y = dataSnapshot.child("lng").getValue(String.class);
+                    Double latX = Double.valueOf(x);
+                    Double latY = Double.valueOf(y);
+                LatLng newLocation2 = new LatLng(latX, latY);
 
-                LatLng newLocation2 = new LatLng(
-                        dataSnapshot.child("lat").getValue(Double.class),
-                        dataSnapshot.child("lng").getValue(Double.class)
-                );
-                System.out.println("DSDS " +dataSnapshot.child("ratio").getValue());
 
                 String key = dataSnapshot.getKey();
                 String name = dataSnapshot.child("name").getValue(String.class);
@@ -344,20 +314,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 System.out.println("ratio" +ratio);
 
 
-
-
-
-
                 mMap.addMarker(new MarkerOptions()
                         .position(newLocation2)
                         .title(name));
 
 
-
-
-
-
-                System.out.println("TANGINA MO MARIAH " +  dataSnapshot.child("ratio").getValue());
 
             }
 
@@ -454,27 +415,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
-//    private LocationListener listener = new LocationListener() {
-//        @Override
-//        public void onLocationChanged(Location location) {
-//
-//        }
-//
-//        @Override
-//        public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//        }
-//
-//        @Override
-//        public void onProviderEnabled(String s) {
-//
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String s) {
-//
-//        }
-//    };
+
 
 
     private void moveCamera(LatLng latLng, float zoom, PlaceInfo placeInfo){

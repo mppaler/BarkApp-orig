@@ -68,7 +68,7 @@ public class FirebaseHelper {
                 String key = dataSnapshot.getKey();
                 int index=mKeys.indexOf(key);
                 locationModels.set(index, locationModel);
-                System.out.println("GAYAHIN NLNG KITA PRE "+ key + index + locationModel.toString());
+
 
 //
 //                LocationModel locationModel = dataSnapshot.getValue(LocationModel.class);

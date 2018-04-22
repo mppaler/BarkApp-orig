@@ -5,18 +5,13 @@ package com.codeworm.barkapp.m_Model;
  */
 
 public class LocationModel {
-    Long lat,lng,ratio,total_slot;
+    Long ratio,total_slot;
     String name;
     String key;
 
     public LocationModel(){
 
     }
-    public Long getLat(){return lat;}
-    public void setLat(Long lat){this.lat=lat;}
-
-    public Long getLng(){return lng;}
-    public void setLng(Long lng){this.lng=lng;}
 
 
     public Long getRatio(){ return ratio;}

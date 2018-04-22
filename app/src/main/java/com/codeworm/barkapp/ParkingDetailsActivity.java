@@ -173,7 +173,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
 
         DatabaseReference query = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
 
-        query.orderByKey().limitToFirst(2).addListenerForSingleValueEvent(new ValueEventListener() {
+        query.orderByKey().limitToFirst(100).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -182,7 +182,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
                     System.out.println("KEYS " + refKey);
 
                     DatabaseReference query2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
-                    query2.child(refKey).orderByKey().limitToFirst(4).addListenerForSingleValueEvent(new ValueEventListener() {
+                    query2.child(refKey).orderByKey().limitToFirst(100).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
@@ -192,7 +192,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
 
 
                                 if (key.equals(slot_id) && User.equals(user)) {
-                                    System.out.println("GUMANA NA AMP " + key + slot_id);
+
 
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference();
 
@@ -204,12 +204,12 @@ public class ParkingDetailsActivity extends AppCompatActivity {
                                     String childKey = childSnapshot.getKey();
                                     dbref.child("locs").child(refKey).child(childKey).updateChildren(result_user);
 
-                                    System.out.println("KEYS2 " + refKey + childKey);
+
 
 
 //                        dbref.child("Racks").child("001").child(refKey).child("User").setValue(user);
 
-                                    Toast.makeText(ParkingDetailsActivity.this, "FIREBASE ACCEPTED", Toast.LENGTH_SHORT).show();
+
 
                                 } else {
                                     //

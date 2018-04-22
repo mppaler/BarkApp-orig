@@ -209,7 +209,7 @@ public class ScanActivity extends AppCompatActivity {
 
         DatabaseReference query = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
 
-        query.orderByKey().limitToFirst(2).addListenerForSingleValueEvent(new ValueEventListener() {
+        query.orderByKey().limitToFirst(100).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
@@ -217,7 +217,7 @@ public class ScanActivity extends AppCompatActivity {
                     final String refKey = ds.getKey();
 
                     DatabaseReference query2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://barkapp-cc121.firebaseio.com/").child("locs");
-                    query2.child(refKey).orderByKey().limitToFirst(4).addListenerForSingleValueEvent(new ValueEventListener() {
+                    query2.child(refKey).orderByKey().limitToFirst(100).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
