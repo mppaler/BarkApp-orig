@@ -112,6 +112,7 @@ public class ScanActivity extends AppCompatActivity {
                             }else{
                                 Toast.makeText(getApplicationContext(), jsonObject.getString("type"), Toast.LENGTH_LONG).show();
                                 flagMatch = false;
+                                loadingDialog.dismiss();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

@@ -71,7 +71,8 @@ public class AccountFragment extends Fragment {
                 System.out.println("You clicked " + details[position]);
                 switch (position){
                     case 0: startActivity(new Intent(getActivity().getApplicationContext(), ChangeFullnameActivity.class)); break;
-                    case 1: startActivity(new Intent(getActivity().getApplicationContext(), ChangeUsernameActivity.class)); break;
+                    case 1: //startActivity(new Intent(getActivity().getApplicationContext(), ChangeUsernameActivity.class)); break;
+                        Toast.makeText(getActivity(), "Username cannot be changed.", Toast.LENGTH_SHORT).show(); break;
                     case 2: startActivity(new Intent(getActivity().getApplicationContext(), ChangePasswordActivity.class)); break;
                     case 3: startActivity(new Intent(getActivity().getApplicationContext(), ChangeMobileNumberActivity.class)); break;
 

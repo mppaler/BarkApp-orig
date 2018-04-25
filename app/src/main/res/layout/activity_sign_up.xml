@@ -73,6 +73,16 @@
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:id="@+id/textView42"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.62"
+                android:text="*Once you have registered a valid username, it cannot be changed anymore. "
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
             <EditText
                 android:id="@+id/editUsername"
                 android:layout_width="match_parent"

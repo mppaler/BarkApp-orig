@@ -284,13 +284,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 mTotals.add(ratio);
                 mKeys.add(key);
 
-
-                mMap.addMarker(new MarkerOptions()
-                        .position(newLocation)
-                        .title(name)
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
-
-
+                if(mMap != null){
+                    mMap.addMarker(new MarkerOptions()
+                            .position(newLocation)
+                            .title(name)
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.markericon1)));
+                }
 
 
             }
